@@ -1,14 +1,22 @@
 
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Star, Heart, ShoppingCart, Truck, Shield, Recycle } from 'lucide-react';
+import { Star, Heart, ShoppingCart, Truck, Shield, Recycle, RotateCcw, Minus, Plus } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [quantity, setQuantity] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [show360View, setShow360View] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   // Mock product data
   const product = {
@@ -20,22 +28,93 @@ const ProductDetails = () => {
     reviews: 156,
     inStock: true,
     images: [
-      "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23A3C3A7' width='400' height='400'/><circle cx='200' cy='200' r='80' fill='%23ffffff'/><text x='200' y='210' text-anchor='middle' fill='%23A3C3A7' font-size='20'>Bamboo Bottle</text></svg>",
-      "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%237C9082' width='400' height='400'/><circle cx='200' cy='200' r='80' fill='%23ffffff'/><text x='200' y='210' text-anchor='middle' fill='%237C9082' font-size='20'>Side View</text></svg>",
+      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=600&h=600&fit=crop"
     ],
-    description: "Made from sustainable bamboo, this water bottle is perfect for eco-conscious individuals. Features double-wall insulation and leak-proof design.",
+    description: "Made from sustainable bamboo, this water bottle is perfect for eco-conscious individuals. Features double-wall insulation and leak-proof design with a sleek modern aesthetic.",
     features: [
       "100% sustainable bamboo construction",
       "Double-wall insulation keeps drinks cold for 24hrs",
       "Leak-proof design with secure cap",
       "BPA-free and food-grade materials",
-      "Lightweight and durable"
+      "Lightweight and durable",
+      "Easy-grip ergonomic design"
     ],
     sustainability: {
       carbonSaved: "2.5kg CO₂",
       recyclable: true,
       sustainabilityScore: 9.2
+    },
+    reviews: [
+      {
+        id: 1,
+        name: "Sarah Johnson",
+        rating: 5,
+        comment: "Amazing quality! Love that it's eco-friendly and keeps my drinks cold all day.",
+        date: "2024-01-15",
+        verified: true
+      },
+      {
+        id: 2,
+        name: "Mike Chen",
+        rating: 4,
+        comment: "Great bottle, very sturdy. The bamboo finish looks beautiful.",
+        date: "2024-01-10",
+        verified: true
+      }
+    ]
+  };
+
+  const handleAddToCart = async () => {
+    // Check if user is signed in (mock check)
+    const isSignedIn = false; // This would come from your auth context
+    
+    if (!isSignedIn) {
+      toast({
+        title: "Sign In Required",
+        description: "Please sign in to add items to your cart.",
+        duration: 4000,
+      });
+      navigate('/login');
+      return;
     }
+
+    setIsAddingToCart(true);
+    
+    // Simulate cart animation
+    const button = document.querySelector('.add-to-cart-main');
+    if (button) {
+      button.classList.add('animate-bounce');
+    }
+
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    setIsAddingToCart(false);
+    
+    toast({
+      title: "Added to Cart! 🛒✨",
+      description: `${quantity} x ${product.name} added successfully. Flying to your cart!`,
+      duration: 4000,
+    });
+
+    // Remove animation class
+    setTimeout(() => {
+      if (button) {
+        button.classList.remove('animate-bounce');
+      }
+    }, 500);
+  };
+
+  const handle360View = () => {
+    setShow360View(!show360View);
+    toast({
+      title: show360View ? "360° View Disabled" : "360° View Enabled",
+      description: show360View ? "Back to normal view" : "Drag to rotate the product",
+      duration: 2000,
+    });
   };
 
   const relatedProducts = [
@@ -43,14 +122,14 @@ const ProductDetails = () => {
       id: "2",
       name: "Organic Cotton Tote Bag",
       price: 18.99,
-      image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect fill='%23F5F5F0' width='300' height='300'/><rect x='50' y='80' width='200' height='140' fill='%23A3C3A7'/><text x='150' y='155' text-anchor='middle' fill='%23ffffff' font-size='16'>Cotton Bag</text></svg>",
+      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop",
       rating: 4.6
     },
     {
       id: "3",
       name: "Bamboo Cutlery Set",
       price: 15.99,
-      image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect fill='%238B7355' width='300' height='300'/><circle cx='150' cy='150' r='60' fill='%23ffffff'/><text x='150' y='155' text-anchor='middle' fill='%238B7355' font-size='14'>Cutlery</text></svg>",
+      image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=300&h=300&fit=crop",
       rating: 4.7
     }
   ];
@@ -59,21 +138,48 @@ const ProductDetails = () => {
     <div className="min-h-screen bg-cream-50">
       <Header />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 pt-24">
         {/* Product Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Product Images */}
           <div className="space-y-4">
-            <div className="aspect-square bg-white rounded-eco shadow-eco overflow-hidden">
+            <div className="relative aspect-square bg-white rounded-xl shadow-eco overflow-hidden">
               <img 
-                src={product.images[0]} 
+                src={product.images[selectedImage]} 
                 alt={product.name}
-                className="w-full h-full object-cover"
+                className={`w-full h-full object-cover transition-transform duration-700 ${
+                  show360View ? 'scale-110 animate-pulse' : ''
+                }`}
               />
+              
+              {/* 360° View Toggle */}
+              <Button
+                onClick={handle360View}
+                className={`absolute top-4 right-4 rounded-full w-12 h-12 p-0 transition-all duration-300 ${
+                  show360View ? 'bg-forest-600 text-white' : 'bg-white/90 text-forest-600'
+                }`}
+              >
+                <RotateCcw className={`h-5 w-5 ${show360View ? 'animate-spin' : ''}`} />
+              </Button>
+
+              {show360View && (
+                <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
+                  <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full">
+                    <span className="text-sm font-medium text-forest-700">360° View Active</span>
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="grid grid-cols-4 gap-2">
+            
+            <div className="grid grid-cols-4 gap-3">
               {product.images.map((image, index) => (
-                <div key={index} className="aspect-square bg-white rounded-lg overflow-hidden border-2 border-transparent hover:border-sage-300 cursor-pointer">
+                <div 
+                  key={index} 
+                  className={`aspect-square bg-white rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${
+                    selectedImage === index ? 'ring-2 ring-forest-500 shadow-lg' : 'hover:shadow-md'
+                  }`}
+                  onClick={() => setSelectedImage(index)}
+                >
                   <img src={image} alt={`${product.name} view ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
               ))}
@@ -83,53 +189,125 @@ const ProductDetails = () => {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-outfit font-bold text-forest-700 mb-2">{product.name}</h1>
+              <h1 className="text-4xl font-outfit font-bold text-forest-700 mb-3">{product.name}</h1>
               <div className="flex items-center gap-4 mb-4">
                 <div className="flex items-center">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className={`h-5 w-5 ${i < Math.floor(product.rating) ? 'fill-amber-400 text-amber-400' : 'text-gray-200'}`} />
                   ))}
-                  <span className="ml-2 text-forest-600">({product.reviews} reviews)</span>
+                  <span className="ml-2 text-forest-600 font-medium">({product.reviews.length} reviews)</span>
                 </div>
-                {product.inStock && <Badge className="bg-sage-100 text-sage-700">In Stock</Badge>}
+                {product.inStock && <Badge className="bg-forest-100 text-forest-700">✅ In Stock</Badge>}
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <span className="text-3xl font-bold text-forest-700">${product.price}</span>
+            <div className="flex items-center gap-4">
+              <span className="text-4xl font-bold text-forest-700">${product.price}</span>
               <span className="text-xl text-gray-400 line-through">${product.originalPrice}</span>
-              <Badge className="bg-coral-100 text-coral-700">Save ${(product.originalPrice - product.price).toFixed(2)}</Badge>
+              <Badge className="bg-coral-100 text-coral-700 text-lg px-3 py-1">
+                Save ${(product.originalPrice - product.price).toFixed(2)}
+              </Badge>
             </div>
 
             {/* Sustainability Metrics */}
-            <div className="bg-sage-50 rounded-eco p-4">
-              <h3 className="font-semibold text-forest-700 mb-3 flex items-center">
-                <Recycle className="h-5 w-5 mr-2" />
+            <div className="bg-forest-50 rounded-xl p-6 border border-forest-200">
+              <h3 className="font-semibold text-forest-700 mb-4 flex items-center text-lg">
+                <Recycle className="h-6 w-6 mr-3 text-forest-600" />
                 Environmental Impact
               </h3>
-              <div className="grid grid-cols-3 gap-4 text-sm">
-                <div className="text-center">
-                  <div className="font-bold text-forest-700">{product.sustainability.carbonSaved}</div>
-                  <div className="text-sage-600">Carbon Saved</div>
+              <div className="grid grid-cols-3 gap-6 text-center">
+                <div>
+                  <div className="font-bold text-forest-700 text-xl">{product.sustainability.carbonSaved}</div>
+                  <div className="text-sage-600 text-sm">Carbon Saved</div>
                 </div>
-                <div className="text-center">
-                  <div className="font-bold text-forest-700">{product.sustainability.sustainabilityScore}/10</div>
-                  <div className="text-sage-600">Eco Score</div>
+                <div>
+                  <div className="font-bold text-forest-700 text-xl">{product.sustainability.sustainabilityScore}/10</div>
+                  <div className="text-sage-600 text-sm">Eco Score</div>
                 </div>
-                <div className="text-center">
-                  <div className="font-bold text-sage-700">✓ 100%</div>
-                  <div className="text-sage-600">Recyclable</div>
+                <div>
+                  <div className="font-bold text-forest-700 text-xl">✓ 100%</div>
+                  <div className="text-sage-600 text-sm">Recyclable</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quantity Selector */}
+            <div className="flex items-center gap-4">
+              <span className="font-medium text-forest-700">Quantity:</span>
+              <div className="flex items-center border border-sage-300 rounded-lg">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="rounded-none border-r"
+                >
+                  <Minus className="h-4 w-4" />
+                </Button>
+                <span className="px-4 py-2 font-medium min-w-[3rem] text-center">{quantity}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="rounded-none border-l"
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-4">
+              <div className="flex gap-3">
+                <Button 
+                  className={`add-to-cart-main flex-1 bg-forest-700 hover:bg-forest-800 text-lg py-6 transition-all duration-300 ${
+                    isAddingToCart ? 'animate-pulse' : 'hover:shadow-lg'
+                  }`}
+                  onClick={handleAddToCart}
+                  disabled={isAddingToCart}
+                >
+                  <ShoppingCart className={`h-5 w-5 mr-2 ${isAddingToCart ? 'animate-bounce' : ''}`} />
+                  {isAddingToCart ? 'Adding to Cart...' : `Add ${quantity} to Cart`}
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className={`border-sage-300 hover:bg-sage-50 w-16 h-16 transition-all duration-300 ${
+                    isLiked ? 'bg-coral-50 border-coral-300' : ''
+                  }`}
+                  onClick={() => {
+                    setIsLiked(!isLiked);
+                    toast({
+                      title: isLiked ? "Removed from Wishlist" : "Added to Wishlist",
+                      description: isLiked ? "💔 Item removed" : "❤️ Item saved for later",
+                      duration: 2000,
+                    });
+                  }}
+                >
+                  <Heart className={`h-6 w-6 transition-all duration-300 ${
+                    isLiked ? 'fill-coral text-coral' : 'text-sage-600'
+                  }`} />
+                </Button>
+              </div>
+              
+              <div className="flex items-center gap-6 text-sm text-sage-600">
+                <div className="flex items-center">
+                  <Truck className="h-4 w-4 mr-2" />
+                  Free shipping on orders $25+
+                </div>
+                <div className="flex items-center">
+                  <Shield className="h-4 w-4 mr-2" />
+                  30-day return policy
                 </div>
               </div>
             </div>
 
             {/* Features */}
             <div>
-              <h3 className="font-semibold text-forest-700 mb-3">Key Features</h3>
-              <ul className="space-y-2">
+              <h3 className="font-semibold text-forest-700 mb-4 text-lg">Key Features</h3>
+              <ul className="space-y-3">
                 {product.features.map((feature, index) => (
                   <li key={index} className="flex items-start">
-                    <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                    <span className="w-2 h-2 bg-forest-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
                     <span className="text-forest-600">{feature}</span>
                   </li>
                 ))}
@@ -138,46 +316,53 @@ const ProductDetails = () => {
 
             {/* Description */}
             <div>
-              <h3 className="font-semibold text-forest-700 mb-3">Description</h3>
+              <h3 className="font-semibold text-forest-700 mb-3 text-lg">Description</h3>
               <p className="text-forest-600 leading-relaxed">{product.description}</p>
             </div>
+          </div>
+        </div>
 
-            {/* Action Buttons */}
-            <div className="space-y-4">
-              <div className="flex gap-3">
-                <Button className="flex-1 bg-forest-700 hover:bg-forest-800">
-                  <ShoppingCart className="h-5 w-5 mr-2" />
-                  Add to Cart
-                </Button>
-                <Button variant="outline" size="icon" className="border-sage-300 hover:bg-sage-50">
-                  <Heart className="h-5 w-5" />
-                </Button>
-              </div>
-              
-              <div className="flex items-center gap-4 text-sm text-sage-600">
-                <div className="flex items-center">
-                  <Truck className="h-4 w-4 mr-1" />
-                  Free shipping on orders $25+
+        {/* Reviews Section */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-outfit font-bold text-forest-700 mb-8">Customer Reviews</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {product.reviews.map((review) => (
+              <div key={review.id} className="bg-white rounded-xl p-6 shadow-eco">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-forest-100 rounded-full flex items-center justify-center">
+                      <span className="font-semibold text-forest-700">{review.name[0]}</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-forest-700">{review.name}</div>
+                      {review.verified && (
+                        <div className="text-xs text-sage-600">✓ Verified Purchase</div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className={`h-4 w-4 ${i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-200'}`} />
+                    ))}
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <Shield className="h-4 w-4 mr-1" />
-                  30-day return policy
-                </div>
+                <p className="text-forest-600 mb-2">{review.comment}</p>
+                <div className="text-sm text-sage-500">{new Date(review.date).toLocaleDateString()}</div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
 
         {/* Related Products */}
         <div>
-          <h2 className="text-2xl font-outfit font-bold text-forest-700 mb-8">You Might Also Like</h2>
+          <h2 className="text-3xl font-outfit font-bold text-forest-700 mb-8">You Might Also Like</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {relatedProducts.map((relatedProduct) => (
-              <div key={relatedProduct.id} className="bg-white rounded-eco shadow-eco overflow-hidden hover:shadow-eco-lg transition-all duration-300">
+              <div key={relatedProduct.id} className="bg-white rounded-xl shadow-eco overflow-hidden hover:shadow-eco-lg transition-all duration-300 hover-lift">
                 <div className="aspect-square overflow-hidden">
-                  <img src={relatedProduct.image} alt={relatedProduct.name} className="w-full h-full object-cover" />
+                  <img src={relatedProduct.image} alt={relatedProduct.name} className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
                 </div>
-                <div className="p-4">
+                <div className="p-6">
                   <h3 className="font-semibold text-forest-700 mb-2">{relatedProduct.name}</h3>
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-bold text-forest-700">${relatedProduct.price}</span>

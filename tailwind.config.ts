@@ -57,7 +57,7 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// GreenWise Brand Colors
+				// Enhanced GreenWise Brand Colors with Tree Green Focus
 				sage: {
 					DEFAULT: '#7C9082',
 					50: '#F0F3F1',
@@ -84,18 +84,33 @@ export default {
 					800: '#523D31',
 					900: '#3F2B25',
 				},
+				// Enhanced Forest/Tree Green palette
 				forest: {
-					DEFAULT: '#2C5530',
-					50: '#E8F0E9',
-					100: '#D1E1D3',
-					200: '#A3C3A7',
-					300: '#75A57B',
-					400: '#47874F',
-					500: '#2C5530',
-					600: '#234428',
-					700: '#1A3320',
-					800: '#112218',
-					900: '#081110',
+					DEFAULT: '#1B4D3E',
+					50: '#E8F5F0',
+					100: '#D1EBE1',
+					200: '#A3D7C3',
+					300: '#75C3A5',
+					400: '#47AF87',
+					500: '#2F7D5E',
+					600: '#1B4D3E',
+					700: '#164237',
+					800: '#11362F',
+					900: '#0C2B28',
+				},
+				// Tree green variations
+				tree: {
+					DEFAULT: '#228B22',
+					50: '#E8F5E8',
+					100: '#D1EBD1',
+					200: '#A3D7A3',
+					300: '#75C375',
+					400: '#47AF47',
+					500: '#228B22',
+					600: '#1B6F1B',
+					700: '#145314',
+					800: '#0D370D',
+					900: '#061B06',
 				},
 				cream: {
 					DEFAULT: '#F5F5F0',
@@ -152,6 +167,16 @@ export default {
 						transform: 'translateY(0)'
 					}
 				},
+				'fade-in-up': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(30px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
 				'slide-in-right': {
 					'0%': { transform: 'translateX(100%)' },
 					'100%': { transform: 'translateX(0)' }
@@ -165,14 +190,30 @@ export default {
 						opacity: '0.8',
 						transform: 'scale(1.05)'
 					}
+				},
+				'cart-fly': {
+					'0%': {
+						transform: 'translateX(0) translateY(0) scale(1)',
+						opacity: '1'
+					},
+					'50%': {
+						transform: 'translateX(50px) translateY(-20px) scale(0.8)',
+						opacity: '0.8'
+					},
+					'100%': {
+						transform: 'translateX(100px) translateY(-40px) scale(0.6)',
+						opacity: '0'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.6s ease-out',
+				'fade-in-up': 'fade-in-up 0.8s ease-out',
 				'slide-in-right': 'slide-in-right 0.3s ease-out',
 				'pulse-eco': 'pulse-eco 2s ease-in-out infinite',
+				'cart-fly': 'cart-fly 1s ease-out forwards',
 			}
 		}
 	},

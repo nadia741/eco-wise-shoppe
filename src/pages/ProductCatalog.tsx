@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Search, Filter, Grid, List, ChevronDown } from 'lucide-react';
+import { Search, Filter, Grid, List, ChevronDown, Leaf, Recycle, Globe, Heart, Rabbit } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
@@ -8,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
+import { Badge } from '@/components/ui/badge';
 
 const ProductCatalog = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -15,8 +17,9 @@ const ProductCatalog = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [priceRange, setPriceRange] = useState([0, 200]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCertifications, setSelectedCertifications] = useState<string[]>([]);
 
-  // Mock products data - expanded from ProductGrid
+  // Enhanced product data with more categories and details
   const allProducts = [
     {
       id: '1',
@@ -25,12 +28,13 @@ const ProductCatalog = () => {
       originalPrice: 34.99,
       rating: 4.8,
       reviews: 124,
-      image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23f0f3f1"/><rect x="50" y="50" width="300" height="200" fill="%23ffffff" rx="12"/><circle cx="200" cy="120" r="30" fill="%237C9082"/><text x="200" y="180" text-anchor="middle" fill="%232C5530" font-family="Arial" font-size="14">Organic Cotton Tee</text></svg>',
+      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop',
       sustainabilityScore: 95,
       certifications: ['GOTS', 'Fair Trade', 'Carbon Neutral'],
       carbonFootprint: '2.1kg',
       category: 'Clothing',
       isNew: true,
+      description: 'Soft, breathable organic cotton t-shirt made from sustainably sourced materials.',
     },
     {
       id: '2',
@@ -38,12 +42,13 @@ const ProductCatalog = () => {
       price: 68.00,
       rating: 4.9,
       reviews: 89,
-      image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23e8f0e9"/><rect x="50" y="50" width="300" height="200" fill="%23ffffff" rx="12"/><circle cx="200" cy="120" r="30" fill="%23A3C3A7"/><text x="200" y="180" text-anchor="middle" fill="%232C5530" font-family="Arial" font-size="14">Bamboo Athletic Set</text></svg>',
+      image: 'https://images.unsplash.com/photo-1506629905138-c3d9db2cd4b0?w=400&h=400&fit=crop',
       sustainabilityScore: 88,
       certifications: ['OEKO-TEX', 'Cradle to Cradle'],
       carbonFootprint: '3.4kg',
       category: 'Clothing',
       isBestseller: true,
+      description: 'Moisture-wicking bamboo athletic wear for eco-conscious fitness enthusiasts.',
     },
     {
       id: '3',
@@ -52,85 +57,108 @@ const ProductCatalog = () => {
       originalPrice: 22.00,
       rating: 4.6,
       reviews: 256,
-      image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23f2f0ed"/><rect x="50" y="50" width="300" height="200" fill="%23ffffff" rx="12"/><rect x="170" y="80" width="60" height="120" fill="%2381A4CD" rx="8"/><circle cx="200" cy="90" r="8" fill="%23ffffff"/><text x="200" y="230" text-anchor="middle" fill="%232C5530" font-family="Arial" font-size="14">Recycled Bottle</text></svg>',
+      image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=400&fit=crop',
       sustainabilityScore: 92,
       certifications: ['100% Recycled', 'BPA Free'],
       carbonFootprint: '0.8kg',
       category: 'Drinkware',
+      description: 'Durable water bottle made from 100% recycled ocean plastic.',
     },
     {
       id: '4',
-      name: 'Solar-Powered Portable Charger',
-      price: 45.99,
+      name: 'Organic Dog Toy Set',
+      price: 32.99,
       rating: 4.7,
-      reviews: 178,
-      image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23fefefe"/><rect x="50" y="50" width="300" height="200" fill="%23ffffff" rx="12"/><rect x="120" y="90" width="160" height="100" fill="%23000000" rx="8"/><rect x="140" y="110" width="120" height="60" fill="%232C5530" rx="4"/><circle cx="200" cy="140" r="10" fill="%23FF8A5C"/><text x="200" y="220" text-anchor="middle" fill="%232C5530" font-family="Arial" font-size="14">Solar Charger</text></svg>',
+      reviews: 145,
+      image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400&h=400&fit=crop',
       sustainabilityScore: 85,
-      certifications: ['Energy Star', 'RoHS'],
-      carbonFootprint: '5.2kg',
-      category: 'Electronics',
-      isNew: true,
+      certifications: ['Organic', 'Non-Toxic'],
+      carbonFootprint: '1.2kg',
+      category: 'Pet Care',
+      description: 'Safe, organic toys for your furry friends made from natural hemp.',
     },
     {
       id: '5',
-      name: 'Upcycled Denim Messenger Bag',
-      price: 89.00,
+      name: 'Bamboo Kitchen Utensil Set',
+      price: 28.00,
       rating: 4.8,
-      reviews: 67,
-      image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23f0f3f1"/><rect x="50" y="50" width="300" height="200" fill="%23ffffff" rx="12"/><rect x="100" y="100" width="200" height="120" fill="%238B7355" rx="8"/><rect x="120" y="120" width="160" height="20" fill="%23654F3D"/><circle cx="150" cy="160" r="6" fill="%23FF8A5C"/><text x="200" y="240" text-anchor="middle" fill="%232C5530" font-family="Arial" font-size="14">Upcycled Bag</text></svg>',
+      reviews: 89,
+      image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop',
       sustainabilityScore: 90,
-      certifications: ['Upcycled', 'Vegan'],
-      carbonFootprint: '1.9kg',
-      category: 'Bags',
-      isBestseller: true,
+      certifications: ['FSC Certified', 'Plastic-Free'],
+      carbonFootprint: '1.5kg',
+      category: 'Home & Garden',
+      description: 'Complete bamboo kitchen set including spatulas, spoons, and tongs.',
     },
     {
       id: '6',
-      name: 'Biodegradable Phone Case - iPhone',
-      price: 32.99,
+      name: 'Natural Shampoo Bar',
+      price: 18.99,
       rating: 4.5,
       reviews: 203,
-      image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23e8f0e9"/><rect x="50" y="50" width="300" height="200" fill="%23ffffff" rx="12"/><rect x="150" y="80" width="100" height="140" fill="%237C9082" rx="12"/><circle cx="200" cy="100" r="8" fill="%23000000"/><rect x="160" y="200" width="80" height="4" fill="%23000000" rx="2"/><text x="200" y="240" text-anchor="middle" fill="%232C5530" font-family="Arial" font-size="14">Bio Phone Case</text></svg>',
+      image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop',
       sustainabilityScore: 87,
-      certifications: ['Compostable', 'Plant-Based'],
-      carbonFootprint: '0.6kg',
-      category: 'Electronics',
+      certifications: ['Cruelty-Free', 'Vegan'],
+      carbonFootprint: '0.3kg',
+      category: 'Personal Care',
+      description: 'Zero-waste shampoo bar with natural ingredients for healthy hair.',
     },
     {
       id: '7',
-      name: 'Recycled Aluminum Water Bottle',
-      price: 18.99,
-      rating: 4.7,
-      reviews: 89,
-      image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23e8f0e9"/><rect x="50" y="50" width="300" height="200" fill="%23ffffff" rx="12"/><rect x="170" y="80" width="60" height="120" fill="%2381A4CD" rx="8"/><circle cx="200" cy="90" r="8" fill="%23ffffff"/><text x="200" y="230" text-anchor="middle" fill="%232C5530" font-family="Arial" font-size="14">Aluminum Bottle</text></svg>',
-      sustainabilityScore: 90,
-      certifications: ['100% Recycled', 'BPA Free'],
-      carbonFootprint: '1.2kg',
-      category: 'Drinkware',
+      name: 'Upcycled Canvas Tote Bag',
+      price: 35.00,
+      rating: 4.6,
+      reviews: 167,
+      image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop',
+      sustainabilityScore: 88,
+      certifications: ['Upcycled', 'Fair Trade'],
+      carbonFootprint: '2.1kg',
+      category: 'Bags',
+      description: 'Stylish tote bag made from upcycled canvas with reinforced handles.',
     },
     {
       id: '8',
-      name: 'Hemp Canvas Backpack',
-      price: 75.00,
-      rating: 4.6,
-      reviews: 156,
-      image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23f2f0ed"/><rect x="50" y="50" width="300" height="200" fill="%23ffffff" rx="12"/><rect x="120" y="80" width="160" height="140" fill="%238B7355" rx="8"/><rect x="140" y="100" width="120" height="20" fill="%23654F3D"/><text x="200" y="240" text-anchor="middle" fill="%232C5530" font-family="Arial" font-size="14">Hemp Backpack</text></svg>',
-      sustainabilityScore: 88,
-      certifications: ['Hemp Fiber', 'Durable'],
-      carbonFootprint: '4.5kg',
-      category: 'Bags',
-      isBestseller: true,
+      name: 'Organic Baby Care Kit',
+      price: 45.99,
+      rating: 4.9,
+      reviews: 78,
+      image: 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&h=400&fit=crop',
+      sustainabilityScore: 95,
+      certifications: ['Organic', 'Hypoallergenic'],
+      carbonFootprint: '1.8kg',
+      category: 'Child Care',
+      isNew: true,
+      description: 'Complete organic baby care set with lotions, soaps, and toys.',
     }
   ];
 
-  const categories = ['Clothing', 'Bags', 'Drinkware', 'Electronics', 'Home & Garden', 'Personal Care'];
+  const categories = [
+    { name: 'Clothing', icon: '👕', count: 2 },
+    { name: 'Bags', icon: '👜', count: 1 },
+    { name: 'Drinkware', icon: '🥤', count: 1 },
+    { name: 'Pet Care', icon: '🐕', count: 1 },
+    { name: 'Home & Garden', icon: '🏡', count: 1 },
+    { name: 'Personal Care', icon: '🧴', count: 1 },
+    { name: 'Child Care', icon: '👶', count: 1 }
+  ];
+
+  const quickFilters = [
+    { name: 'Organic', icon: <Leaf className="h-4 w-4" />, key: 'Organic' },
+    { name: 'Plastic-Free', icon: <Recycle className="h-4 w-4" />, key: 'Plastic-Free' },
+    { name: 'Fair Trade', icon: <Globe className="h-4 w-4" />, key: 'Fair Trade' },
+    { name: 'Cruelty-Free', icon: <Rabbit className="h-4 w-4" />, key: 'Cruelty-Free' },
+    { name: 'Carbon Neutral', icon: <Globe className="h-4 w-4" />, key: 'Carbon Neutral' }
+  ];
 
   const filteredProducts = allProducts.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         product.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category);
+    const matchesCertifications = selectedCertifications.length === 0 || 
+                                 selectedCertifications.some(cert => product.certifications.includes(cert));
     
-    return matchesSearch && matchesPrice && matchesCategory;
+    return matchesSearch && matchesPrice && matchesCategory && matchesCertifications;
   });
 
   const handleCategoryChange = (category: string, checked: boolean) => {
@@ -141,50 +169,136 @@ const ProductCatalog = () => {
     }
   };
 
+  const handleCertificationChange = (certification: string, checked: boolean) => {
+    if (checked) {
+      setSelectedCertifications([...selectedCertifications, certification]);
+    } else {
+      setSelectedCertifications(selectedCertifications.filter(c => c !== certification));
+    }
+  };
+
   return (
     <div className="min-h-screen bg-cream-50">
       <Header />
       
       <div className="container mx-auto px-4 py-8 pt-24">
-        {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-outfit font-bold text-forest-700 mb-2">Sustainable Products</h1>
-          <p className="text-sage-600">Discover our eco-friendly collection of verified sustainable products</p>
+        {/* Enhanced Hero Section */}
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-outfit font-bold text-forest-700 mb-4">
+            Sustainable Products Marketplace
+          </h1>
+          <p className="text-lg text-sage-600 max-w-3xl mx-auto mb-6">
+            Discover eco-friendly products that make a positive impact on our planet
+          </p>
+          
+          {/* Smart Search Bar */}
+          <div className="max-w-2xl mx-auto mb-6">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-sage-400" />
+              <Input
+                type="text"
+                placeholder="Search for... soaps, clothes, bags, toys, home decor"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-12 pr-4 py-3 text-lg border-2 border-sage-200 focus:border-forest-500 rounded-xl"
+              />
+            </div>
+          </div>
+
+          {/* Quick Filters */}
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            {quickFilters.map((filter) => (
+              <Button
+                key={filter.key}
+                variant={selectedCertifications.includes(filter.key) ? "default" : "outline"}
+                onClick={() => handleCertificationChange(filter.key, !selectedCertifications.includes(filter.key))}
+                className="bg-forest-600 hover:bg-forest-700 text-white border-forest-600"
+              >
+                {filter.icon}
+                <span className="ml-2">{filter.name}</span>
+              </Button>
+            ))}
+          </div>
+
+          {/* Category Preview */}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-8">
+            {categories.map((category) => (
+              <div
+                key={category.name}
+                onClick={() => handleCategoryChange(category.name, !selectedCategories.includes(category.name))}
+                className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                  selectedCategories.includes(category.name)
+                    ? 'border-forest-500 bg-forest-50 shadow-md'
+                    : 'border-sage-200 bg-white hover:border-sage-300'
+                }`}
+              >
+                <div className="text-2xl mb-2">{category.icon}</div>
+                <div className="font-medium text-forest-700 text-sm">{category.name}</div>
+                <div className="text-xs text-sage-500">{category.count} items</div>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters Sidebar */}
-          <div className={`lg:w-64 ${showFilters ? 'block' : 'hidden lg:block'}`}>
-            <div className="bg-white rounded-eco p-6 shadow-eco sticky top-24">
-              <h3 className="font-semibold text-forest-700 mb-4">Filters</h3>
+          {/* Enhanced Filters Sidebar */}
+          <div className={`lg:w-80 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+            <div className="bg-white rounded-xl p-6 shadow-eco sticky top-24">
+              <h3 className="font-semibold text-forest-700 mb-6 text-lg">Refine Your Search</h3>
               
               {/* Price Range */}
-              <div className="mb-6">
-                <h4 className="font-medium text-forest-600 mb-2">Price Range</h4>
+              <div className="mb-8">
+                <h4 className="font-medium text-forest-600 mb-4 flex items-center">
+                  💰 Price Range
+                </h4>
                 <Slider
                   value={priceRange}
                   onValueChange={setPriceRange}
                   max={200}
                   step={5}
-                  className="mb-2"
+                  className="mb-3"
                 />
                 <div className="flex justify-between text-sm text-sage-600">
                   <span>${priceRange[0]}</span>
-                  <span>${priceRange[1]}</span>
+                  <span>${priceRange[1]}+</span>
                 </div>
               </div>
 
               {/* Categories */}
-              <div className="mb-6">
-                <h4 className="font-medium text-forest-600 mb-2">Categories</h4>
-                <div className="space-y-2">
+              <div className="mb-8">
+                <h4 className="font-medium text-forest-600 mb-4 flex items-center">
+                  📂 Categories
+                </h4>
+                <div className="space-y-3">
                   {categories.map((category) => (
-                    <label key={category} className="flex items-center space-x-2">
+                    <label key={category.name} className="flex items-center space-x-3 cursor-pointer">
                       <Checkbox
-                        checked={selectedCategories.includes(category)}
-                        onCheckedChange={(checked) => handleCategoryChange(category, checked as boolean)}
+                        checked={selectedCategories.includes(category.name)}
+                        onCheckedChange={(checked) => handleCategoryChange(category.name, checked as boolean)}
                       />
-                      <span className="text-sm text-forest-600">{category}</span>
+                      <span className="text-sm text-forest-600 flex-1">{category.icon} {category.name}</span>
+                      <Badge variant="outline" className="text-xs">{category.count}</Badge>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Certifications */}
+              <div className="mb-8">
+                <h4 className="font-medium text-forest-600 mb-4 flex items-center">
+                  🏆 Certifications
+                </h4>
+                <div className="space-y-3">
+                  {quickFilters.map((filter) => (
+                    <label key={filter.key} className="flex items-center space-x-3 cursor-pointer">
+                      <Checkbox
+                        checked={selectedCertifications.includes(filter.key)}
+                        onCheckedChange={(checked) => handleCertificationChange(filter.key, checked as boolean)}
+                      />
+                      <span className="text-sm text-forest-600 flex items-center">
+                        {filter.icon}
+                        <span className="ml-2">{filter.name}</span>
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -193,14 +307,15 @@ const ProductCatalog = () => {
               {/* Clear Filters */}
               <Button 
                 variant="outline" 
-                className="w-full"
+                className="w-full border-forest-600 text-forest-600 hover:bg-forest-50"
                 onClick={() => {
                   setSelectedCategories([]);
+                  setSelectedCertifications([]);
                   setPriceRange([0, 200]);
                   setSearchQuery('');
                 }}
               >
-                Clear Filters
+                Clear All Filters
               </Button>
             </div>
           </div>
@@ -208,25 +323,13 @@ const ProductCatalog = () => {
           {/* Main Content */}
           <div className="flex-1">
             {/* Search and Controls */}
-            <div className="bg-white rounded-eco p-4 shadow-eco mb-6">
+            <div className="bg-white rounded-xl p-4 shadow-eco mb-6">
               <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-                {/* Search */}
-                <div className="relative flex-1 max-w-md">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-sage-400" />
-                  <Input
-                    type="text"
-                    placeholder="Search products..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-
                 <div className="flex items-center gap-4">
                   {/* Mobile Filter Toggle */}
                   <Button
                     variant="outline"
-                    className="lg:hidden"
+                    className="lg:hidden border-forest-600 text-forest-600"
                     onClick={() => setShowFilters(!showFilters)}
                   >
                     <Filter className="h-4 w-4 mr-2" />
@@ -244,16 +347,17 @@ const ProductCatalog = () => {
                       <SelectItem value="price-high">Price: High to Low</SelectItem>
                       <SelectItem value="rating">Highest Rated</SelectItem>
                       <SelectItem value="newest">Newest</SelectItem>
+                      <SelectItem value="eco-score">Best Eco Score</SelectItem>
                     </SelectContent>
                   </Select>
 
                   {/* View Mode */}
-                  <div className="flex border rounded-btn overflow-hidden">
+                  <div className="flex border rounded-lg overflow-hidden">
                     <Button
                       variant={viewMode === 'grid' ? 'default' : 'ghost'}
                       size="sm"
                       onClick={() => setViewMode('grid')}
-                      className="rounded-none"
+                      className="rounded-none bg-forest-600 hover:bg-forest-700"
                     >
                       <Grid className="h-4 w-4" />
                     </Button>
@@ -261,7 +365,7 @@ const ProductCatalog = () => {
                       variant={viewMode === 'list' ? 'default' : 'ghost'}
                       size="sm"
                       onClick={() => setViewMode('list')}
-                      className="rounded-none"
+                      className="rounded-none bg-forest-600 hover:bg-forest-700"
                     >
                       <List className="h-4 w-4" />
                     </Button>
@@ -272,15 +376,41 @@ const ProductCatalog = () => {
               {/* Results Count */}
               <div className="mt-4 pt-4 border-t border-sage-100">
                 <p className="text-sm text-sage-600">
-                  Showing {filteredProducts.length} of {allProducts.length} products
+                  Showing {filteredProducts.length} of {allProducts.length} eco-friendly products
                 </p>
+                {(selectedCategories.length > 0 || selectedCertifications.length > 0) && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {selectedCategories.map(category => (
+                      <Badge key={category} variant="secondary" className="bg-forest-100 text-forest-700">
+                        {category}
+                        <button 
+                          onClick={() => handleCategoryChange(category, false)}
+                          className="ml-2 hover:text-forest-900"
+                        >
+                          ×
+                        </button>
+                      </Badge>
+                    ))}
+                    {selectedCertifications.map(cert => (
+                      <Badge key={cert} variant="secondary" className="bg-sage-100 text-sage-700">
+                        {cert}
+                        <button 
+                          onClick={() => handleCertificationChange(cert, false)}
+                          className="ml-2 hover:text-sage-900"
+                        >
+                          ×
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Products Grid/List */}
             <div className={viewMode === 'grid' 
               ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' 
-              : 'space-y-4'
+              : 'space-y-6'
             }>
               {filteredProducts.map((product) => (
                 <ProductCard
@@ -290,11 +420,36 @@ const ProductCatalog = () => {
               ))}
             </div>
 
+            {filteredProducts.length === 0 && (
+              <div className="text-center py-16">
+                <div className="text-6xl mb-4">🌱</div>
+                <h3 className="text-xl font-semibold text-forest-700 mb-2">No products found</h3>
+                <p className="text-sage-600 mb-6">Try adjusting your filters or search terms</p>
+                <Button 
+                  onClick={() => {
+                    setSelectedCategories([]);
+                    setSelectedCertifications([]);
+                    setPriceRange([0, 200]);
+                    setSearchQuery('');
+                  }}
+                  className="bg-forest-600 hover:bg-forest-700"
+                >
+                  Clear All Filters
+                </Button>
+              </div>
+            )}
+
             {/* Pagination */}
-            <div className="mt-12 text-center">
-              <Button variant="outline" className="mr-4">Previous</Button>
-              <Button variant="outline">Next</Button>
-            </div>
+            {filteredProducts.length > 0 && (
+              <div className="mt-12 text-center">
+                <Button variant="outline" className="mr-4 border-forest-600 text-forest-600">
+                  Previous
+                </Button>
+                <Button variant="outline" className="border-forest-600 text-forest-600">
+                  Next
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

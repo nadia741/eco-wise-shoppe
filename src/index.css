@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -264,16 +263,104 @@ html {
   box-shadow: 0 8px 25px rgba(124, 144, 130, 0.3);
 }
 
-/* Card enhancements */
+/* Cart and interactions animations */
+@keyframes cartFly {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(50px) translateY(-20px) scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(100px) translateY(-40px) scale(0.6);
+    opacity: 0;
+  }
+}
+
+.cart-fly-animation {
+  animation: cartFly 1s ease-out forwards;
+}
+
+/* Enhanced tree green button styles */
+.btn-tree-primary {
+  @apply bg-gradient-to-r from-forest-600 to-tree-600 hover:from-forest-700 hover:to-tree-700 text-white font-semibold py-3 px-6 rounded-btn shadow-eco-lg transition-all duration-300;
+}
+
+.btn-tree-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(27, 77, 62, 0.3);
+}
+
+/* Product card with tree green accents */
 .product-card {
   @apply bg-white rounded-eco shadow-eco overflow-hidden transition-all duration-300;
-  border: 1px solid rgba(124, 144, 130, 0.1);
+  border: 1px solid rgba(27, 77, 62, 0.1);
 }
 
 .product-card:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-  border-color: rgba(124, 144, 130, 0.3);
+  border-color: rgba(27, 77, 62, 0.3);
+}
+
+/* Enhanced 360 view animations */
+.view-360-active {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.product-rotate {
+  animation: rotate 8s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Success message animations */
+.success-bounce {
+  animation: successBounce 0.6s ease-out;
+}
+
+@keyframes successBounce {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Filter badge animations */
+.filter-badge {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filter-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(27, 77, 62, 0.2);
+}
+
+/* Professional gradient backgrounds with tree green */
+.gradient-tree {
+  background: linear-gradient(135deg, #1B4D3E 0%, #2F7D5E 100%);
+}
+
+.gradient-forest-tree {
+  background: linear-gradient(135deg, #1B4D3E 0%, #228B22 50%, #2F7D5E 100%);
+}
+
+/* Wishlist heart animation */
+.heart-bounce {
+  animation: heartBounce 0.6s ease-in-out;
+}
+
+@keyframes heartBounce {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.2); }
+  50% { transform: scale(0.9); }
+  75% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 /* Backdrop blur support */
@@ -322,4 +409,12 @@ img {
 
 .gradient-forest {
   background: linear-gradient(135deg, #2C5530 0%, #47874F 100%);
+}
+
+.gradient-tree {
+  background: linear-gradient(135deg, #1B4D3E 0%, #2F7D5E 100%);
+}
+
+.gradient-forest-tree {
+  background: linear-gradient(135deg, #1B4D3E 0%, #228B22 50%, #2F7D5E 100%);
 }
