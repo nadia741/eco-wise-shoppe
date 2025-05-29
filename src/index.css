@@ -1,92 +1,87 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 245 245 240;
+    --foreground: 44 85 48;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 255 255 255;
+    --card-foreground: 44 85 48;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 255 255 255;
+    --popover-foreground: 44 85 48;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 44 85 48;
+    --primary-foreground: 245 245 240;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 124 144 130;
+    --secondary-foreground: 245 245 240;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 241 245 242;
+    --muted-foreground: 106 125 112;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 124 144 130;
+    --accent-foreground: 245 245 240;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 220 38 38;
+    --destructive-foreground: 248 250 252;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 226 232 228;
+    --input: 226 232 228;
+    --ring: 44 85 48;
 
-    --radius: 0.5rem;
+    --radius: 12px;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 245 245 240;
+    --sidebar-foreground: 44 85 48;
+    --sidebar-primary: 44 85 48;
+    --sidebar-primary-foreground: 245 245 240;
+    --sidebar-accent: 241 245 242;
+    --sidebar-accent-foreground: 44 85 48;
+    --sidebar-border: 226 232 228;
+    --sidebar-ring: 44 85 48;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 17 24 20;
+    --foreground: 241 245 242;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 26 36 30;
+    --card-foreground: 241 245 242;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 26 36 30;
+    --popover-foreground: 241 245 242;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 124 144 130;
+    --primary-foreground: 17 24 20;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 35 50 39;
+    --secondary-foreground: 241 245 242;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 35 50 39;
+    --muted-foreground: 167 183 171;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 35 50 39;
+    --accent-foreground: 241 245 242;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 239 68 68;
+    --destructive-foreground: 248 250 252;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 35 50 39;
+    --input: 35 50 39;
+    --ring: 124 144 130;
+
+    --sidebar-background: 17 24 20;
+    --sidebar-foreground: 241 245 242;
+    --sidebar-primary: 124 144 130;
+    --sidebar-primary-foreground: 17 24 20;
+    --sidebar-accent: 35 50 39;
+    --sidebar-accent-foreground: 241 245 242;
+    --sidebar-border: 35 50 39;
+    --sidebar-ring: 124 144 130;
   }
 }
 
@@ -96,6 +91,91 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-outfit;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-sage-400 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-sage-500;
+}
+
+/* Parallax background */
+.parallax-bg {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23F5F5F0;stop-opacity:1" /><stop offset="50%" style="stop-color:%237C9082;stop-opacity:0.8" /><stop offset="100%" style="stop-color:%232C5530;stop-opacity:1" /></linearGradient></defs><rect width="1000" height="600" fill="url(%23grad1)"/><circle cx="200" cy="150" r="80" fill="%23ffffff" opacity="0.1"/><circle cx="800" cy="400" r="120" fill="%23ffffff" opacity="0.08"/><path d="M0,300 Q250,200 500,300 T1000,300 L1000,600 L0,600 Z" fill="%232C5530" opacity="0.6"/><path d="M0,400 Q300,350 600,400 T1000,400 L1000,600 L0,600 Z" fill="%234F7741" opacity="0.4"/></svg>');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Eco-loading animation */
+.eco-loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #7C9082;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Hover effects */
+.hover-scale {
+  transition: transform 0.2s ease-in-out;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-lift {
+  transition: all 0.3s ease-in-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+}
+
+/* Sustainability badge animations */
+.sustainability-badge {
+  position: relative;
+  overflow: hidden;
+}
+
+.sustainability-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
