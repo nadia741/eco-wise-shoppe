@@ -11,6 +11,7 @@ interface Slide {
   image: string;
   cta: string;
   ctaLink: string;
+  theme: 'light' | 'dark';
 }
 
 const HeroSlider = () => {
@@ -19,55 +20,60 @@ const HeroSlider = () => {
   const slides: Slide[] = [
     {
       id: 1,
-      title: "Summer Collection 2024",
-      subtitle: "Sustainable Fashion",
-      description: "Discover our latest eco-friendly summer collection with organic materials",
-      image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'><rect width='800' height='400' fill='%23e8f0e9'/><rect x='100' y='100' width='600' height='200' fill='%23ffffff' rx='12'/><circle cx='400' cy='200' r='50' fill='%237C9082'/><text x='400' y='320' text-anchor='middle' fill='%232C5530' font-family='Arial' font-size='24'>Summer Collection</text></svg>",
-      cta: "Shop Now",
-      ctaLink: "/products"
+      title: "Sustainable Living Made Simple",
+      subtitle: "Eco-Conscious Shopping",
+      description: "Discover premium eco-friendly products that don't compromise on quality or style. Join 50,000+ conscious consumers making a difference.",
+      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
+      cta: "Shop Collection",
+      ctaLink: "/products",
+      theme: 'dark'
     },
     {
       id: 2,
-      title: "Limited Time Offer",
-      subtitle: "50% Off Selected Items",
-      description: "Save big on our eco-conscious products. Limited time only!",
-      image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'><rect width='800' height='400' fill='%23f2f0ed'/><rect x='100' y='100' width='600' height='200' fill='%23ffffff' rx='12'/><text x='400' y='180' text-anchor='middle' fill='%23FF8A5C' font-family='Arial' font-size='48' font-weight='bold'>50% OFF</text><text x='400' y='220' text-anchor='middle' fill='%232C5530' font-family='Arial' font-size='18'>Limited Time</text></svg>",
-      cta: "Shop Sale",
-      ctaLink: "/products?sale=true"
+      title: "Carbon Neutral Delivery",
+      subtitle: "Free Shipping on Orders $75+",
+      description: "Every order plants a tree and offsets carbon emissions. Experience guilt-free shopping with our carbon-neutral delivery service.",
+      image: "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=2075&auto=format&fit=crop&ixlib=rb-4.0.3",
+      cta: "Learn More",
+      ctaLink: "/how-it-works",
+      theme: 'dark'
     },
     {
       id: 3,
-      title: "New Arrivals",
-      subtitle: "Fresh & Sustainable",
-      description: "Check out our newest additions to the sustainable product lineup",
-      image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'><rect width='800' height='400' fill='%23f0f3f1'/><rect x='100' y='100' width='600' height='200' fill='%23ffffff' rx='12'/><rect x='250' y='140' width='100' height='120' fill='%23A3C3A7' rx='8'/><rect x='450' y='140' width='100' height='120' fill='%238B7355' rx='8'/><text x='400' y='320' text-anchor='middle' fill='%232C5530' font-family='Arial' font-size='20'>New Arrivals</text></svg>",
-      cta: "Explore",
-      ctaLink: "/products?new=true"
+      title: "Certified Organic Collection",
+      subtitle: "Premium Quality Guaranteed",
+      description: "Handpicked organic products with verified certifications. From fashion to home goods, experience the finest sustainable materials.",
+      image: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
+      cta: "Browse Organic",
+      ctaLink: "/products?category=organic",
+      theme: 'light'
     },
     {
       id: 4,
-      title: "Eco-Friendly Living",
-      subtitle: "Make a Difference",
-      description: "Join the sustainable living movement with our certified eco products",
-      image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'><rect width='800' height='400' fill='%23e8f0e9'/><rect x='100' y='100' width='600' height='200' fill='%23ffffff' rx='12'/><circle cx='350' cy='200' r='25' fill='%23forest-500'/><circle cx='450' cy='200' r='25' fill='%23sage-500'/><path d='M375,200 Q400,180 425,200' stroke='%23FF8A5C' stroke-width='3' fill='none'/><text x='400' y='320' text-anchor='middle' fill='%232C5530' font-family='Arial' font-size='18'>Eco-Friendly Living</text></svg>",
-      cta: "Learn More",
-      ctaLink: "/about"
+      title: "Plastic-Free Initiative",
+      subtitle: "Zero Waste Packaging",
+      description: "All our packaging is 100% compostable or recyclable. Join our mission to eliminate single-use plastics from e-commerce.",
+      image: "https://images.unsplash.com/photo-1472396961693-142e6e269027?q=80&w=2052&auto=format&fit=crop&ixlib=rb-4.0.3",
+      cta: "Our Mission",
+      ctaLink: "/about",
+      theme: 'dark'
     },
     {
       id: 5,
-      title: "Free Shipping",
-      subtitle: "On Orders Over $75",
-      description: "Get free shipping on all sustainable products with orders over $75",
-      image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'><rect width='800' height='400' fill='%23fefefe'/><rect x='100' y='100' width='600' height='200' fill='%23ffffff' rx='12'/><rect x='300' y='160' width='200' height='80' fill='%2381A4CD' rx='8'/><circle cx='330' cy='250' r='15' fill='%23000000'/><circle cx='470' cy='250' r='15' fill='%23000000'/><text x='400' y='320' text-anchor='middle' fill='%232C5530' font-family='Arial' font-size='18'>Free Shipping</text></svg>",
-      cta: "Shop Now",
-      ctaLink: "/products"
+      title: "Summer Eco-Collection 2024",
+      subtitle: "Limited Edition - 50% Off",
+      description: "Sustainable summer essentials crafted from renewable materials. Limited time offer on our exclusive eco-conscious collection.",
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
+      cta: "Shop Sale",
+      ctaLink: "/products?sale=true",
+      theme: 'light'
     }
   ];
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, 6000);
 
     return () => clearInterval(timer);
   }, [slides.length]);
@@ -85,39 +91,112 @@ const HeroSlider = () => {
   };
 
   return (
-    <section className="relative h-96 md:h-[500px] overflow-hidden bg-gradient-to-r from-sage-100 to-cream-100">
+    <section className="relative h-[70vh] md:h-[80vh] lg:h-[90vh] overflow-hidden">
       {/* Slides */}
       <div className="relative h-full">
         {slides.map((slide, index) => (
           <div
             key={slide.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
+            className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+              index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
             }`}
           >
-            <div className="grid md:grid-cols-2 h-full items-center container mx-auto px-4">
-              {/* Content */}
-              <div className="space-y-6 z-10 relative">
-                <div className="space-y-2">
-                  <p className="text-sage-600 font-medium text-sm md:text-base">{slide.subtitle}</p>
-                  <h1 className="text-3xl md:text-5xl font-outfit font-bold text-forest-700">{slide.title}</h1>
-                  <p className="text-lg text-sage-600 max-w-md">{slide.description}</p>
+            {/* Background Image with Overlay */}
+            <div className="relative h-full">
+              <img 
+                src={slide.image} 
+                alt={slide.title}
+                className="w-full h-full object-cover"
+              />
+              <div className={`absolute inset-0 ${
+                slide.theme === 'dark' 
+                  ? 'bg-gradient-to-r from-black/60 via-black/40 to-transparent' 
+                  : 'bg-gradient-to-r from-white/70 via-white/50 to-transparent'
+              }`}></div>
+            </div>
+
+            {/* Content */}
+            <div className="absolute inset-0 flex items-center">
+              <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-2xl">
+                  <div className={`space-y-6 ${
+                    index === currentSlide ? 'animate-fade-in' : ''
+                  }`}>
+                    {/* Badge */}
+                    <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
+                      slide.theme === 'dark' 
+                        ? 'bg-sage-500/20 text-sage-100 backdrop-blur-sm' 
+                        : 'bg-forest-500/20 text-forest-700 backdrop-blur-sm'
+                    }`}>
+                      🌱 {slide.subtitle}
+                    </div>
+
+                    {/* Main Headline */}
+                    <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-outfit font-bold leading-tight ${
+                      slide.theme === 'dark' ? 'text-white' : 'text-forest-700'
+                    }`}>
+                      {slide.title}
+                    </h1>
+
+                    {/* Description */}
+                    <p className={`text-lg sm:text-xl leading-relaxed max-w-xl ${
+                      slide.theme === 'dark' ? 'text-cream-100/90' : 'text-forest-600'
+                    }`}>
+                      {slide.description}
+                    </p>
+
+                    {/* CTA Button */}
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                      <Button 
+                        size="lg" 
+                        className="bg-sage-500 hover:bg-sage-600 text-white font-semibold px-8 py-4 rounded-btn shadow-eco-lg hover-lift text-lg transition-all duration-300"
+                        onClick={() => window.location.href = slide.ctaLink}
+                      >
+                        {slide.cta}
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="lg"
+                        className={`font-semibold px-8 py-4 rounded-btn text-lg transition-all duration-300 ${
+                          slide.theme === 'dark' 
+                            ? 'border-2 border-white text-white hover:bg-white hover:text-forest-700' 
+                            : 'border-2 border-forest-700 text-forest-700 hover:bg-forest-700 hover:text-white'
+                        }`}
+                        onClick={() => window.location.href = '/how-it-works'}
+                      >
+                        Learn More
+                      </Button>
+                    </div>
+
+                    {/* Impact Stats */}
+                    <div className="grid grid-cols-3 gap-6 pt-8 max-w-lg">
+                      <div className="text-center">
+                        <div className={`text-2xl sm:text-3xl font-outfit font-bold ${
+                          slide.theme === 'dark' ? 'text-white' : 'text-forest-700'
+                        }`}>2.5M</div>
+                        <div className={`text-sm ${
+                          slide.theme === 'dark' ? 'text-cream-200' : 'text-sage-600'
+                        }`}>CO₂ Saved (kg)</div>
+                      </div>
+                      <div className="text-center">
+                        <div className={`text-2xl sm:text-3xl font-outfit font-bold ${
+                          slide.theme === 'dark' ? 'text-white' : 'text-forest-700'
+                        }`}>15K+</div>
+                        <div className={`text-sm ${
+                          slide.theme === 'dark' ? 'text-cream-200' : 'text-sage-600'
+                        }`}>Eco Products</div>
+                      </div>
+                      <div className="text-center">
+                        <div className={`text-2xl sm:text-3xl font-outfit font-bold ${
+                          slide.theme === 'dark' ? 'text-white' : 'text-forest-700'
+                        }`}>98%</div>
+                        <div className={`text-sm ${
+                          slide.theme === 'dark' ? 'text-cream-200' : 'text-sage-600'
+                        }`}>Happy Customers</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <Button 
-                  size="lg"
-                  className="bg-sage-500 hover:bg-sage-600 text-white font-semibold px-8 py-4 rounded-btn shadow-eco-lg hover-lift"
-                  onClick={() => window.location.href = slide.ctaLink}
-                >
-                  {slide.cta}
-                </Button>
-              </div>
-              {/* Image */}
-              <div className="hidden md:block">
-                <img 
-                  src={slide.image} 
-                  alt={slide.title}
-                  className="w-full h-full object-cover rounded-eco"
-                />
               </div>
             </div>
           </div>
@@ -127,28 +206,41 @@ const HeroSlider = () => {
       {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-forest-500 p-2 rounded-full shadow-eco transition-all z-10"
+        className="absolute left-4 lg:left-8 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full shadow-eco transition-all duration-300 z-20 hover-scale"
+        aria-label="Previous slide"
       >
         <ChevronLeft className="h-6 w-6" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-forest-500 p-2 rounded-full shadow-eco transition-all z-10"
+        className="absolute right-4 lg:right-8 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full shadow-eco transition-all duration-300 z-20 hover-scale"
+        aria-label="Next slide"
       >
         <ChevronRight className="h-6 w-6" />
       </button>
 
       {/* Dots Indicator */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+      <div className="absolute bottom-6 lg:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all ${
-              index === currentSlide ? 'bg-sage-500' : 'bg-white/60 hover:bg-white/80'
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              index === currentSlide 
+                ? 'bg-white scale-125 shadow-lg' 
+                : 'bg-white/50 hover:bg-white/70 hover:scale-110'
             }`}
+            aria-label={`Go to slide ${index + 1}`}
           />
         ))}
+      </div>
+
+      {/* Progress Bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
+        <div 
+          className="h-full bg-sage-400 transition-all duration-1000 ease-linear"
+          style={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
+        />
       </div>
     </section>
   );

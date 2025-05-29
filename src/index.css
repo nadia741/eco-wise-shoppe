@@ -92,10 +92,12 @@
 
   body {
     @apply bg-background text-foreground font-inter;
+    line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-outfit;
+    line-height: 1.2;
   }
 }
 
@@ -105,7 +107,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-muted;
+  @apply bg-sage-50;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -116,33 +118,14 @@
   @apply bg-sage-500;
 }
 
-/* Parallax background */
-.parallax-bg {
-  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23F5F5F0;stop-opacity:1" /><stop offset="50%" style="stop-color:%237C9082;stop-opacity:0.8" /><stop offset="100%" style="stop-color:%232C5530;stop-opacity:1" /></linearGradient></defs><rect width="1000" height="600" fill="url(%23grad1)"/><circle cx="200" cy="150" r="80" fill="%23ffffff" opacity="0.1"/><circle cx="800" cy="400" r="120" fill="%23ffffff" opacity="0.08"/><path d="M0,300 Q250,200 500,300 T1000,300 L1000,600 L0,600 Z" fill="%232C5530" opacity="0.6"/><path d="M0,400 Q300,350 600,400 T1000,400 L1000,600 L0,600 Z" fill="%234F7741" opacity="0.4"/></svg>');
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
-/* Eco-loading animation */
-.eco-loader {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #7C9082;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Hover effects */
+/* Enhanced hover effects */
 .hover-scale {
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hover-scale:hover {
@@ -150,18 +133,114 @@
 }
 
 .hover-lift {
-  transition: all 0.3s ease-in-out;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Professional animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.7s ease-out;
+}
+
+/* Eco-loading animation with shimmer effect */
+.eco-loader {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #f3f4f6;
+  border-top: 3px solid #7C9082;
+  border-radius: 50%;
+  animation: spin 1.2s ease-in-out infinite;
+  position: relative;
+}
+
+.eco-loader::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: #7C9082;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% { 
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
 }
 
 /* Sustainability badge animations */
 .sustainability-badge {
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, #7C9082, #A3C3A7);
 }
 
 .sustainability-badge::before {
@@ -171,11 +250,76 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  animation: shimmer 2s infinite;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 2.5s infinite;
 }
 
-@keyframes shimmer {
-  0% { left: -100%; }
-  100% { left: 100%; }
+/* Enhanced button styles */
+.btn-primary {
+  @apply bg-gradient-to-r from-sage-500 to-sage-600 hover:from-sage-600 hover:to-sage-700 text-white font-semibold py-3 px-6 rounded-btn shadow-eco-lg transition-all duration-300;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(124, 144, 130, 0.3);
+}
+
+/* Card enhancements */
+.product-card {
+  @apply bg-white rounded-eco shadow-eco overflow-hidden transition-all duration-400;
+  border: 1px solid rgba(124, 144, 130, 0.1);
+}
+
+.product-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  border-color: rgba(124, 144, 130, 0.3);
+}
+
+/* Backdrop blur support */
+.backdrop-blur-glass {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Focus styles for accessibility */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-sage-500 focus:ring-offset-2;
+}
+
+/* Text selection */
+::selection {
+  background-color: rgba(124, 144, 130, 0.3);
+  color: #2C5530;
+}
+
+/* Responsive image optimization */
+img {
+  @apply max-w-full h-auto;
+}
+
+/* Enhanced shadows for depth */
+.shadow-eco-soft {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-eco-medium {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.shadow-eco-strong {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* Professional gradient backgrounds */
+.gradient-eco {
+  background: linear-gradient(135deg, #F5F5F0 0%, #E8F0E9 100%);
+}
+
+.gradient-sage {
+  background: linear-gradient(135deg, #7C9082 0%, #A3C3A7 100%);
+}
+
+.gradient-forest {
+  background: linear-gradient(135deg, #2C5530 0%, #47874F 100%);
 }
