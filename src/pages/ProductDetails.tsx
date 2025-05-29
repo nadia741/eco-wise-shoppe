@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -7,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Star, Heart, ShoppingCart, Truck, Shield, Recycle, RotateCcw, Minus, Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import OrderSuccessMessage from '@/components/OrderSuccessMessage';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -17,6 +17,7 @@ const ProductDetails = () => {
   const [show360View, setShow360View] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [showOrderSuccess, setShowOrderSuccess] = useState(false);
 
   // Mock product data
   const product = {
@@ -47,7 +48,7 @@ const ProductDetails = () => {
       recyclable: true,
       sustainabilityScore: 9.2
     },
-    reviews: [
+    reviewsList: [
       {
         id: 1,
         name: "Sarah Johnson",
@@ -86,7 +87,7 @@ const ProductDetails = () => {
     // Simulate cart animation
     const button = document.querySelector('.add-to-cart-main');
     if (button) {
-      button.classList.add('animate-bounce');
+      button.classList.add('cart-fly-animation');
     }
 
     // Simulate API call
@@ -103,9 +104,26 @@ const ProductDetails = () => {
     // Remove animation class
     setTimeout(() => {
       if (button) {
-        button.classList.remove('animate-bounce');
+        button.classList.remove('cart-fly-animation');
       }
-    }, 500);
+    }, 1000);
+  };
+
+  const handleBuyNow = () => {
+    const isSignedIn = false;
+    
+    if (!isSignedIn) {
+      toast({
+        title: "Sign In Required",
+        description: "Please sign in to proceed with your order.",
+        duration: 4000,
+      });
+      navigate('/login');
+      return;
+    }
+
+    // Mock successful order
+    setShowOrderSuccess(true);
   };
 
   const handle360View = () => {
@@ -134,6 +152,16 @@ const ProductDetails = () => {
     }
   ];
 
+  if (showOrderSuccess) {
+    return (
+      <OrderSuccessMessage 
+        orderNumber="GW-2024-001"
+        customerName="Eco Friend"
+        onContinueShopping={() => setShowOrderSuccess(false)}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-cream-50">
       <Header />
@@ -148,7 +176,7 @@ const ProductDetails = () => {
                 src={product.images[selectedImage]} 
                 alt={product.name}
                 className={`w-full h-full object-cover transition-transform duration-700 ${
-                  show360View ? 'scale-110 animate-pulse' : ''
+                  show360View ? 'scale-110 product-rotate' : ''
                 }`}
               />
               
@@ -156,7 +184,7 @@ const ProductDetails = () => {
               <Button
                 onClick={handle360View}
                 className={`absolute top-4 right-4 rounded-full w-12 h-12 p-0 transition-all duration-300 ${
-                  show360View ? 'bg-forest-600 text-white' : 'bg-white/90 text-forest-600'
+                  show360View ? 'bg-forest-600 text-white view-360-active' : 'bg-white/90 text-forest-600'
                 }`}
               >
                 <RotateCcw className={`h-5 w-5 ${show360View ? 'animate-spin' : ''}`} />
@@ -195,7 +223,7 @@ const ProductDetails = () => {
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className={`h-5 w-5 ${i < Math.floor(product.rating) ? 'fill-amber-400 text-amber-400' : 'text-gray-200'}`} />
                   ))}
-                  <span className="ml-2 text-forest-600 font-medium">({product.reviews.length} reviews)</span>
+                  <span className="ml-2 text-forest-600 font-medium">({product.reviews} reviews)</span>
                 </div>
                 {product.inStock && <Badge className="bg-forest-100 text-forest-700">✅ In Stock</Badge>}
               </div>
@@ -284,10 +312,17 @@ const ProductDetails = () => {
                   }}
                 >
                   <Heart className={`h-6 w-6 transition-all duration-300 ${
-                    isLiked ? 'fill-coral text-coral' : 'text-sage-600'
+                    isLiked ? 'fill-coral text-coral heart-bounce' : 'text-sage-600'
                   }`} />
                 </Button>
               </div>
+              
+              <Button 
+                className="w-full bg-tree-600 hover:bg-tree-700 text-white text-lg py-6"
+                onClick={handleBuyNow}
+              >
+                Buy Now - Express Checkout
+              </Button>
               
               <div className="flex items-center gap-6 text-sm text-sage-600">
                 <div className="flex items-center">
@@ -326,7 +361,7 @@ const ProductDetails = () => {
         <div className="mb-16">
           <h2 className="text-3xl font-outfit font-bold text-forest-700 mb-8">Customer Reviews</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {product.reviews.map((review) => (
+            {product.reviewsList.map((review) => (
               <div key={review.id} className="bg-white rounded-xl p-6 shadow-eco">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
