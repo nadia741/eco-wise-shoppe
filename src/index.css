@@ -266,7 +266,7 @@ html {
 
 /* Card enhancements */
 .product-card {
-  @apply bg-white rounded-eco shadow-eco overflow-hidden transition-all duration-400;
+  @apply bg-white rounded-eco shadow-eco overflow-hidden transition-all duration-300;
   border: 1px solid rgba(124, 144, 130, 0.1);
 }
 
