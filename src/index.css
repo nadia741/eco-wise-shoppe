@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -100,7 +101,7 @@
   }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar with tree green theme */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -110,11 +111,11 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-sage-400 rounded-full;
+  @apply bg-tree-400 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-sage-500;
+  @apply bg-tree-500;
 }
 
 /* Smooth scrolling */
@@ -122,7 +123,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Enhanced hover effects */
+/* Enhanced hover effects with tree green theme */
 .hover-scale {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -137,7 +138,7 @@ html {
 
 .hover-lift:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 40px rgba(27, 77, 62, 0.15);
 }
 
 /* Professional animations */
@@ -183,6 +184,30 @@ html {
   }
 }
 
+@keyframes cartFly {
+  0% {
+    transform: translateX(0) translateY(0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(200px) translateY(-100px) scale(0.8) rotate(90deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(400px) translateY(-200px) scale(0.3) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes productRotate {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
 .animate-fade-in-up {
   animation: fadeInUp 0.8s ease-out;
 }
@@ -195,12 +220,20 @@ html {
   animation: slideInRight 0.7s ease-out;
 }
 
-/* Eco-loading animation with shimmer effect */
+.animate-cart-fly {
+  animation: cartFly 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-product-rotate {
+  animation: productRotate 8s linear infinite;
+}
+
+/* Enhanced eco-loading animation */
 .eco-loader {
   width: 50px;
   height: 50px;
   border: 3px solid #f3f4f6;
-  border-top: 3px solid #7C9082;
+  border-top: 3px solid #228B22;
   border-radius: 50%;
   animation: spin 1.2s ease-in-out infinite;
   position: relative;
@@ -213,7 +246,7 @@ html {
   left: 50%;
   width: 20px;
   height: 20px;
-  background: #7C9082;
+  background: linear-gradient(135deg, #228B22, #1B4D3E);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   animation: pulse 1.5s ease-in-out infinite;
@@ -235,11 +268,11 @@ html {
   }
 }
 
-/* Sustainability badge animations */
+/* Enhanced sustainability badge */
 .sustainability-badge {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #7C9082, #A3C3A7);
+  background: linear-gradient(135deg, #228B22, #1B4D3E);
 }
 
 .sustainability-badge::before {
@@ -253,56 +286,26 @@ html {
   animation: shimmer 2.5s infinite;
 }
 
-/* Enhanced button styles */
+/* Professional button styles with tree green theme */
 .btn-primary {
-  @apply bg-gradient-to-r from-sage-500 to-sage-600 hover:from-sage-600 hover:to-sage-700 text-white font-semibold py-3 px-6 rounded-btn shadow-eco-lg transition-all duration-300;
+  @apply bg-gradient-to-r from-tree-600 to-tree-700 hover:from-tree-700 hover:to-tree-800 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition-all duration-300;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(124, 144, 130, 0.3);
+  box-shadow: 0 8px 25px rgba(34, 139, 34, 0.3);
 }
 
-/* Cart and interactions animations */
-@keyframes cartFly {
-  0% {
-    transform: translateX(0) translateY(0) scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(50px) translateY(-20px) scale(0.8);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateX(100px) translateY(-40px) scale(0.6);
-    opacity: 0;
-  }
-}
-
-.cart-fly-animation {
-  animation: cartFly 1s ease-out forwards;
-}
-
-/* Enhanced tree green button styles */
-.btn-tree-primary {
-  @apply bg-gradient-to-r from-forest-600 to-tree-600 hover:from-forest-700 hover:to-tree-700 text-white font-semibold py-3 px-6 rounded-btn shadow-eco-lg transition-all duration-300;
-}
-
-.btn-tree-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(27, 77, 62, 0.3);
-}
-
-/* Product card with tree green accents */
+/* Enhanced card styles */
 .product-card {
-  @apply bg-white rounded-eco shadow-eco overflow-hidden transition-all duration-300;
-  border: 1px solid rgba(27, 77, 62, 0.1);
+  @apply bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden transition-all duration-300;
+  border: 1px solid rgba(34, 139, 34, 0.1);
 }
 
 .product-card:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-  border-color: rgba(27, 77, 62, 0.3);
+  border-color: rgba(34, 139, 34, 0.3);
 }
 
 /* Enhanced 360 view animations */
@@ -311,12 +314,12 @@ html {
 }
 
 .product-rotate {
-  animation: rotate 8s linear infinite;
+  animation: productRotate 8s linear infinite;
 }
 
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* Cart flying animation */
+.cart-fly-animation {
+  animation: cartFly 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 /* Success message animations */
@@ -329,25 +332,6 @@ html {
   50% { transform: scale(1.05); }
   70% { transform: scale(0.9); }
   100% { transform: scale(1); opacity: 1; }
-}
-
-/* Filter badge animations */
-.filter-badge {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.filter-badge:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(27, 77, 62, 0.2);
-}
-
-/* Professional gradient backgrounds with tree green */
-.gradient-tree {
-  background: linear-gradient(135deg, #1B4D3E 0%, #2F7D5E 100%);
-}
-
-.gradient-forest-tree {
-  background: linear-gradient(135deg, #1B4D3E 0%, #228B22 50%, #2F7D5E 100%);
 }
 
 /* Wishlist heart animation */
@@ -363,21 +347,49 @@ html {
   100% { transform: scale(1); }
 }
 
-/* Backdrop blur support */
-.backdrop-blur-glass {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+/* Professional gradient backgrounds */
+.gradient-eco {
+  background: linear-gradient(135deg, #F5F5F0 0%, #E8F5E8 100%);
+}
+
+.gradient-tree {
+  background: linear-gradient(135deg, #228B22 0%, #1B4D3E 100%);
+}
+
+.gradient-forest {
+  background: linear-gradient(135deg, #1B4D3E 0%, #228B22 100%);
 }
 
 /* Focus styles for accessibility */
 .focus-ring {
-  @apply focus:outline-none focus:ring-2 focus:ring-sage-500 focus:ring-offset-2;
+  @apply focus:outline-none focus:ring-2 focus:ring-tree-500 focus:ring-offset-2;
 }
 
-/* Text selection */
+/* Text selection with tree green theme */
 ::selection {
-  background-color: rgba(124, 144, 130, 0.3);
-  color: #2C5530;
+  background-color: rgba(34, 139, 34, 0.3);
+  color: #1B4D3E;
+}
+
+/* Enhanced shadows for depth */
+.shadow-eco-soft {
+  box-shadow: 0 2px 8px rgba(34, 139, 34, 0.06);
+}
+
+.shadow-eco-medium {
+  box-shadow: 0 4px 16px rgba(34, 139, 34, 0.08);
+}
+
+.shadow-eco-strong {
+  box-shadow: 0 8px 32px rgba(34, 139, 34, 0.12);
+}
+
+/* Glass morphism effects */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Responsive image optimization */
@@ -385,36 +397,18 @@ img {
   @apply max-w-full h-auto;
 }
 
-/* Enhanced shadows for depth */
-.shadow-eco-soft {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+/* Loading skeleton animation */
+@keyframes skeleton {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
 }
 
-.shadow-eco-medium {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-}
-
-.shadow-eco-strong {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-}
-
-/* Professional gradient backgrounds */
-.gradient-eco {
-  background: linear-gradient(135deg, #F5F5F0 0%, #E8F0E9 100%);
-}
-
-.gradient-sage {
-  background: linear-gradient(135deg, #7C9082 0%, #A3C3A7 100%);
-}
-
-.gradient-forest {
-  background: linear-gradient(135deg, #2C5530 0%, #47874F 100%);
-}
-
-.gradient-tree {
-  background: linear-gradient(135deg, #1B4D3E 0%, #2F7D5E 100%);
-}
-
-.gradient-forest-tree {
-  background: linear-gradient(135deg, #1B4D3E 0%, #228B22 50%, #2F7D5E 100%);
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: skeleton 1.5s infinite;
 }
