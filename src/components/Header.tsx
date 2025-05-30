@@ -1,192 +1,198 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, User, Menu, Leaf, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Link } from 'react-router-dom';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
-interface HeaderProps {
-  onMenuClick?: () => void;
-}
+const Header = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
-const Header = ({ onMenuClick }: HeaderProps) => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [searchExpanded, setSearchExpanded] = useState(false);
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    }
+  };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const navigationLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/products', label: 'Products' },
+    { href: '/about', label: 'About' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/how-it-works', label: 'How It Works' }
+  ];
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
-        isScrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-eco border-b border-sage-100' 
-          : 'bg-transparent'
-      }`}
-    >
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-sage-200 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 hover-scale transition-all duration-300">
-            <div className={`p-2 rounded-eco transition-all duration-300 ${
-              isScrolled ? 'bg-sage-500' : 'bg-sage-500/90 backdrop-blur-sm'
-            }`}>
-              <Leaf className="h-6 w-6 text-white" />
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="relative">
+              <div className="w-10 h-10 bg-gradient-to-br from-tree-500 to-forest-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <Leaf className="h-6 w-6 text-white" />
+              </div>
+              <div className="absolute inset-0 bg-tree-400 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
             </div>
-            <span className={`text-2xl font-outfit font-bold transition-colors duration-300 ${
-              isScrolled ? 'text-forest-700' : 'text-white'
-            }`}>
-              GreenWise
-            </span>
+            <div className="hidden sm:block">
+              <h1 className="text-2xl font-outfit font-bold text-forest-700">
+                Green<span className="text-tree-600">Wise</span>
+              </h1>
+              <p className="text-xs text-sage-500 leading-none">Sustainable Marketplace</p>
+            </div>
           </Link>
 
-          {/* Navigation - Hidden on mobile */}
+          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <Link to="/products" className={`font-medium transition-colors duration-300 hover:text-sage-500 ${
-              isScrolled ? 'text-forest-600' : 'text-white/90'
-            }`}>
-              Products
-            </Link>
-            <Link to="/products" className={`font-medium transition-colors duration-300 hover:text-sage-500 ${
-              isScrolled ? 'text-forest-600' : 'text-white/90'
-            }`}>
-              Categories
-            </Link>
-            <Link to="/about" className={`font-medium transition-colors duration-300 hover:text-sage-500 ${
-              isScrolled ? 'text-forest-600' : 'text-white/90'
-            }`}>
-              Sustainability
-            </Link>
-            <Link to="/blog" className={`font-medium transition-colors duration-300 hover:text-sage-500 ${
-              isScrolled ? 'text-forest-600' : 'text-white/90'
-            }`}>
-              Blog
-            </Link>
-            <Link to="/about" className={`font-medium transition-colors duration-300 hover:text-sage-500 ${
-              isScrolled ? 'text-forest-600' : 'text-white/90'
-            }`}>
-              About
-            </Link>
+            {navigationLinks.map((link) => (
+              <Link
+                key={link.href}
+                to={link.href}
+                className="text-sage-700 hover:text-tree-600 font-medium transition-colors duration-200 relative group"
+              >
+                {link.label}
+                <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-tree-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+              </Link>
+            ))}
           </nav>
 
           {/* Search Bar */}
-          <div className={`hidden md:flex items-center transition-all duration-300 ${
-            searchExpanded ? 'w-80' : 'w-64'
-          }`}>
-            <div className="relative w-full">
-              <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 transition-colors duration-300 ${
-                isScrolled ? 'text-sage-400' : 'text-sage-300'
-              }`} />
+          <div className="hidden md:block flex-1 max-w-lg mx-8">
+            <form onSubmit={handleSearch} className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-sage-400" />
               <Input
                 type="text"
                 placeholder="Search eco-friendly products..."
-                className={`pl-10 pr-4 py-2 border-sage-200 focus:border-sage-400 rounded-btn transition-all duration-300 ${
-                  isScrolled 
-                    ? 'bg-white/90 text-forest-700' 
-                    : 'bg-white/20 backdrop-blur-sm text-white placeholder:text-white/70 border-white/30'
-                }`}
-                onFocus={() => setSearchExpanded(true)}
-                onBlur={() => setSearchExpanded(false)}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-12 pr-4 py-3 w-full border-sage-200 focus:border-tree-400 rounded-xl bg-white/80 backdrop-blur-sm"
               />
-            </div>
+              <Button
+                type="submit"
+                size="sm"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-tree-600 hover:bg-tree-700 text-white px-4 py-2 rounded-lg"
+              >
+                Search
+              </Button>
+            </form>
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center space-x-3">
-            {/* Mobile Search Toggle */}
-            <Button 
-              variant="ghost" 
+          {/* Action Buttons */}
+          <div className="flex items-center space-x-4">
+            {/* Mobile Search */}
+            <Button
+              variant="ghost"
               size="sm"
-              className={`md:hidden transition-colors duration-300 ${
-                isScrolled ? 'text-forest-600 hover:text-sage-500' : 'text-white hover:text-sage-200'
-              }`}
+              className="md:hidden text-sage-600 hover:text-tree-600"
+              onClick={() => {
+                const query = prompt('Search for products...');
+                if (query?.trim()) {
+                  navigate(`/products?search=${encodeURIComponent(query.trim())}`);
+                }
+              }}
             >
               <Search className="h-5 w-5" />
             </Button>
 
             {/* Wishlist */}
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               size="sm"
-              className={`hidden sm:flex transition-colors duration-300 ${
-                isScrolled ? 'text-forest-600 hover:text-sage-500' : 'text-white hover:text-sage-200'
-              }`}
+              className="hidden sm:flex items-center space-x-2 text-sage-600 hover:text-tree-600 relative"
             >
               <Heart className="h-5 w-5" />
+              <span className="hidden lg:inline text-sm font-medium">Wishlist</span>
+              <span className="absolute -top-1 -right-1 bg-coral text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                3
+              </span>
             </Button>
 
-            {/* Shopping Cart */}
+            {/* Cart */}
             <Link to="/cart">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="sm"
-                className={`relative transition-colors duration-300 ${
-                  isScrolled ? 'text-forest-600 hover:text-sage-500' : 'text-white hover:text-sage-200'
-                }`}
+                className="flex items-center space-x-2 text-sage-600 hover:text-tree-600 relative"
               >
                 <ShoppingCart className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 bg-coral text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                <span className="hidden lg:inline text-sm font-medium">Cart</span>
+                <span className="absolute -top-1 -right-1 bg-tree-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   2
                 </span>
               </Button>
             </Link>
 
-            {/* User Account */}
-            <Link to="/login">
-              <Button 
-                variant="ghost" 
-                size="sm"
-                className={`transition-colors duration-300 ${
-                  isScrolled ? 'text-forest-600 hover:text-sage-500' : 'text-white hover:text-sage-200'
-                }`}
-              >
-                <User className="h-5 w-5" />
-              </Button>
-            </Link>
+            {/* User Menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center space-x-2 text-sage-600 hover:text-tree-600"
+                >
+                  <User className="h-5 w-5" />
+                  <span className="hidden lg:inline text-sm font-medium">Account</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 bg-white/95 backdrop-blur-md border border-sage-200">
+                <DropdownMenuItem asChild>
+                  <Link to="/profile" className="flex items-center">
+                    <User className="h-4 w-4 mr-2" />
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/login" className="flex items-center">
+                    Sign In
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/signup" className="flex items-center">
+                    Sign Up
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-            {/* Mobile Menu Toggle */}
-            <Button 
-              variant="ghost" 
+            {/* Mobile Menu */}
+            <Button
+              variant="ghost"
               size="sm"
-              className={`lg:hidden transition-colors duration-300 ${
-                isScrolled ? 'text-forest-600 hover:text-sage-500' : 'text-white hover:text-sage-200'
-              }`}
-              onClick={onMenuClick}
+              className="lg:hidden text-sage-600"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <Menu className="h-5 w-5" />
             </Button>
           </div>
         </div>
-      </div>
 
-      {/* Mobile Search Bar - Expandable */}
-      <div className={`md:hidden border-t transition-all duration-300 ${
-        isScrolled 
-          ? 'border-sage-100 bg-white/95' 
-          : 'border-white/20 bg-white/10 backdrop-blur-sm'
-      }`}>
-        <div className="container mx-auto px-4 py-3">
-          <div className="relative">
-            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 ${
-              isScrolled ? 'text-sage-400' : 'text-white/70'
-            }`} />
-            <Input
-              type="text"
-              placeholder="Search products..."
-              className={`pl-10 pr-4 py-2 w-full rounded-btn transition-all duration-300 ${
-                isScrolled 
-                  ? 'bg-white border-sage-200 text-forest-700' 
-                  : 'bg-white/20 backdrop-blur-sm text-white placeholder:text-white/70 border-white/30'
-              }`}
-            />
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="lg:hidden border-t border-sage-200 py-4 bg-white/95 backdrop-blur-md">
+            <nav className="flex flex-col space-y-3">
+              {navigationLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="text-sage-700 hover:text-tree-600 font-medium py-2 px-4 rounded-lg hover:bg-tree-50 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
           </div>
-        </div>
+        )}
       </div>
     </header>
   );

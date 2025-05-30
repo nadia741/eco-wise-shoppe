@@ -2,9 +2,10 @@
 import React from 'react';
 import Header from '@/components/Header';
 import HeroSlider from '@/components/HeroSlider';
-import ProductGrid from '@/components/ProductGrid';
+import FeaturedProducts from '@/components/FeaturedProducts';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import SustainabilityMetrics from '@/components/SustainabilityMetrics';
+import ImpactSection from '@/components/ImpactSection';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -12,7 +13,8 @@ const Index = () => {
     <div className="min-h-screen bg-cream-50">
       <Header />
       <HeroSlider />
-      <ProductGrid />
+      <FeaturedProducts />
+      <ImpactSection />
       <TestimonialsSection />
       <SustainabilityMetrics />
       <Footer />
