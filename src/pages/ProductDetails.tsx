@@ -4,17 +4,24 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Star, Heart, ShoppingCart, Truck, Shield, Recycle, RotateCcw, Minus, Plus } from 'lucide-react';
+import { Star, Heart, ShoppingCart, Truck, Shield, Recycle, Minus, Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useCart } from '@/contexts/CartContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRewards } from '@/contexts/RewardsContext';
 import OrderSuccessMessage from '@/components/OrderSuccessMessage';
+import ProductReviews from '@/components/ProductReviews';
+import ProductRecommendations from '@/components/ProductRecommendations';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { addToCart } = useCart();
+  const { user } = useAuth();
+  const { earnPoints, getPointsFromPurchase } = useRewards();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [show360View, setShow360View] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [showOrderSuccess, setShowOrderSuccess] = useState(false);
@@ -47,32 +54,44 @@ const ProductDetails = () => {
       carbonSaved: "2.5kg CO₂",
       recyclable: true,
       sustainabilityScore: 9.2
-    },
-    reviewsList: [
-      {
-        id: 1,
-        name: "Sarah Johnson",
-        rating: 5,
-        comment: "Amazing quality! Love that it's eco-friendly and keeps my drinks cold all day.",
-        date: "2024-01-15",
-        verified: true
-      },
-      {
-        id: 2,
-        name: "Mike Chen",
-        rating: 4,
-        comment: "Great bottle, very sturdy. The bamboo finish looks beautiful.",
-        date: "2024-01-10",
-        verified: true
-      }
-    ]
+    }
   };
 
+  const mockReviews = [
+    {
+      id: "1",
+      userId: "user1",
+      userName: "Sarah Johnson",
+      rating: 5,
+      comment: "Amazing quality! Love that it's eco-friendly and keeps my drinks cold all day. The bamboo texture feels premium and looks beautiful.",
+      date: "2024-01-15",
+      verified: true,
+      helpful: 12
+    },
+    {
+      id: "2",
+      userId: "user2",
+      userName: "Mike Chen",
+      rating: 4,
+      comment: "Great bottle, very sturdy. The bamboo finish looks beautiful and it's the perfect size for my daily needs.",
+      date: "2024-01-10",
+      verified: true,
+      helpful: 8
+    },
+    {
+      id: "3",
+      userId: "user3",
+      userName: "Emma Wilson",
+      rating: 5,
+      comment: "Best purchase I've made this year! Sustainable, functional, and stylish. Highly recommend to anyone looking to reduce plastic waste.",
+      date: "2024-01-08",
+      verified: true,
+      helpful: 15
+    }
+  ];
+
   const handleAddToCart = async () => {
-    // Check if user is signed in (mock check)
-    const isSignedIn = false; // This would come from your auth context
-    
-    if (!isSignedIn) {
+    if (!user) {
       toast({
         title: "Sign In Required",
         description: "Please sign in to add items to your cart.",
@@ -84,20 +103,32 @@ const ProductDetails = () => {
 
     setIsAddingToCart(true);
     
-    // Simulate cart animation
+    // Add to cart with animation
     const button = document.querySelector('.add-to-cart-main');
     if (button) {
       button.classList.add('cart-fly-animation');
     }
 
-    // Simulate API call
+    // Add to cart
+    addToCart({
+      id: product.id!,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+      quantity: quantity
+    });
+
+    // Earn points for cart addition (1 point per dollar)
+    const pointsEarned = getPointsFromPurchase(product.price * quantity);
+    earnPoints(pointsEarned);
+
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     setIsAddingToCart(false);
     
     toast({
       title: "Added to Cart! 🛒✨",
-      description: `${quantity} x ${product.name} added successfully. Flying to your cart!`,
+      description: `${quantity} x ${product.name} added successfully. You earned ${pointsEarned} reward points!`,
       duration: 4000,
     });
 
@@ -110,9 +141,7 @@ const ProductDetails = () => {
   };
 
   const handleBuyNow = () => {
-    const isSignedIn = false;
-    
-    if (!isSignedIn) {
+    if (!user) {
       toast({
         title: "Sign In Required",
         description: "Please sign in to proceed with your order.",
@@ -125,32 +154,6 @@ const ProductDetails = () => {
     // Mock successful order
     setShowOrderSuccess(true);
   };
-
-  const handle360View = () => {
-    setShow360View(!show360View);
-    toast({
-      title: show360View ? "360° View Disabled" : "360° View Enabled",
-      description: show360View ? "Back to normal view" : "Drag to rotate the product",
-      duration: 2000,
-    });
-  };
-
-  const relatedProducts = [
-    {
-      id: "2",
-      name: "Organic Cotton Tote Bag",
-      price: 18.99,
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop",
-      rating: 4.6
-    },
-    {
-      id: "3",
-      name: "Bamboo Cutlery Set",
-      price: 15.99,
-      image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=300&h=300&fit=crop",
-      rating: 4.7
-    }
-  ];
 
   if (showOrderSuccess) {
     return (
@@ -171,39 +174,19 @@ const ProductDetails = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Product Images */}
           <div className="space-y-4">
-            <div className="relative aspect-square bg-white rounded-xl shadow-eco overflow-hidden">
+            <div className="relative aspect-square bg-white rounded-xl shadow-eco overflow-hidden animate-fade-in-scale">
               <img 
                 src={product.images[selectedImage]} 
                 alt={product.name}
-                className={`w-full h-full object-cover transition-transform duration-700 ${
-                  show360View ? 'scale-110 product-rotate' : ''
-                }`}
+                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
               />
-              
-              {/* 360° View Toggle */}
-              <Button
-                onClick={handle360View}
-                className={`absolute top-4 right-4 rounded-full w-12 h-12 p-0 transition-all duration-300 ${
-                  show360View ? 'bg-forest-600 text-white view-360-active' : 'bg-white/90 text-forest-600'
-                }`}
-              >
-                <RotateCcw className={`h-5 w-5 ${show360View ? 'animate-spin' : ''}`} />
-              </Button>
-
-              {show360View && (
-                <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
-                  <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full">
-                    <span className="text-sm font-medium text-forest-700">360° View Active</span>
-                  </div>
-                </div>
-              )}
             </div>
             
             <div className="grid grid-cols-4 gap-3">
               {product.images.map((image, index) => (
                 <div 
                   key={index} 
-                  className={`aspect-square bg-white rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${
+                  className={`aspect-square bg-white rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover-lift ${
                     selectedImage === index ? 'ring-2 ring-forest-500 shadow-lg' : 'hover:shadow-md'
                   }`}
                   onClick={() => setSelectedImage(index)}
@@ -215,7 +198,7 @@ const ProductDetails = () => {
           </div>
 
           {/* Product Info */}
-          <div className="space-y-6">
+          <div className="space-y-6 animate-fade-in-up">
             <div>
               <h1 className="text-4xl font-outfit font-bold text-forest-700 mb-3">{product.name}</h1>
               <div className="flex items-center gap-4 mb-4">
@@ -259,7 +242,7 @@ const ProductDetails = () => {
               </div>
             </div>
 
-            {/* Quantity Selector */}
+            {/* Quantity and Actions - keeping existing code */}
             <div className="flex items-center gap-4">
               <span className="font-medium text-forest-700">Quantity:</span>
               <div className="flex items-center border border-sage-300 rounded-lg">
@@ -360,56 +343,12 @@ const ProductDetails = () => {
         {/* Reviews Section */}
         <div className="mb-16">
           <h2 className="text-3xl font-outfit font-bold text-forest-700 mb-8">Customer Reviews</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {product.reviewsList.map((review) => (
-              <div key={review.id} className="bg-white rounded-xl p-6 shadow-eco">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-forest-100 rounded-full flex items-center justify-center">
-                      <span className="font-semibold text-forest-700">{review.name[0]}</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-forest-700">{review.name}</div>
-                      {review.verified && (
-                        <div className="text-xs text-sage-600">✓ Verified Purchase</div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`h-4 w-4 ${i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-200'}`} />
-                    ))}
-                  </div>
-                </div>
-                <p className="text-forest-600 mb-2">{review.comment}</p>
-                <div className="text-sm text-sage-500">{new Date(review.date).toLocaleDateString()}</div>
-              </div>
-            ))}
-          </div>
+          <ProductReviews productId={product.id!} reviews={mockReviews} />
         </div>
 
-        {/* Related Products */}
-        <div>
-          <h2 className="text-3xl font-outfit font-bold text-forest-700 mb-8">You Might Also Like</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {relatedProducts.map((relatedProduct) => (
-              <div key={relatedProduct.id} className="bg-white rounded-xl shadow-eco overflow-hidden hover:shadow-eco-lg transition-all duration-300 hover-lift">
-                <div className="aspect-square overflow-hidden">
-                  <img src={relatedProduct.image} alt={relatedProduct.name} className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-semibold text-forest-700 mb-2">{relatedProduct.name}</h3>
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-forest-700">${relatedProduct.price}</span>
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                      <span className="text-sm text-sage-600 ml-1">{relatedProduct.rating}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Recommendations */}
+        <div className="mb-16">
+          <ProductRecommendations currentProductId={product.id} userId={user?.id} />
         </div>
       </div>
 
