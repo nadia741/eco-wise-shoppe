@@ -52,7 +52,7 @@ const ProductRecommendations = ({ userId, currentProductId, limit = 4 }: Product
             className="animate-fade-in-scale"
             style={{ animationDelay: `${index * 0.1}s` }}
           >
-            <ProductCard product={product} />
+            <ProductCard {...product} />
           </div>
         ))}
       </div>

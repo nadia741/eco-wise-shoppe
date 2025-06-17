@@ -34,7 +34,7 @@ const ProductCard = ({
   reviews,
   image,
   sustainabilityScore,
-  certifications,
+  certifications = [], // Default to empty array
   carbonFootprint,
   isNew = false,
   isBestseller = false,
@@ -268,9 +268,9 @@ const ProductCard = ({
           </p>
         )}
 
-        {/* Certifications with stagger animation */}
+        {/* Certifications with stagger animation - Fixed to handle undefined certifications */}
         <div className="flex flex-wrap gap-2">
-          {certifications.slice(0, 2).map((cert, index) => (
+          {certifications && certifications.length > 0 && certifications.slice(0, 2).map((cert, index) => (
             <Badge 
               key={index} 
               variant="outline" 
@@ -279,7 +279,7 @@ const ProductCard = ({
               {cert}
             </Badge>
           ))}
-          {certifications.length > 2 && (
+          {certifications && certifications.length > 2 && (
             <Badge variant="outline" className="text-xs text-tree-600 border-tree-200 bg-tree-50 stagger-3">
               +{certifications.length - 2} more
             </Badge>
