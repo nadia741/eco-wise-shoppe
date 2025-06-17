@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -8,47 +8,132 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CreditCard, Truck, Shield, Leaf } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
-  const orderItems = [
-    {
-      id: "1",
-      name: "Eco-Friendly Bamboo Water Bottle",
-      price: 24.99,
-      quantity: 2,
-      image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23A3C3A7' width='100' height='100'/><circle cx='50' cy='50' r='25' fill='%23ffffff'/></svg>"
-    },
-    {
-      id: "2",
-      name: "Organic Cotton Tote Bag",
-      price: 18.99,
-      quantity: 1,
-      image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%237C9082' width='100' height='100'/><circle cx='50' cy='50' r='25' fill='%23ffffff'/></svg>"
-    }
-  ];
+  const { cartItems, getCartTotal, clearCart } = useCart();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  
+  const [currentTab, setCurrentTab] = useState('shipping');
+  const [isProcessing, setIsProcessing] = useState(false);
+  
+  // Form states
+  const [shippingInfo, setShippingInfo] = useState({
+    firstName: user?.firstName || '',
+    lastName: user?.lastName || '',
+    email: user?.email || '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+    billingIsSame: true,
+    saveInfo: false
+  });
 
-  const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const [paymentInfo, setPaymentInfo] = useState({
+    cardNumber: '',
+    expiry: '',
+    cvv: '',
+    cardName: ''
+  });
+
+  const subtotal = getCartTotal();
   const shipping = 0; // Free shipping
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
+
+  const handleShippingSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!shippingInfo.firstName || !shippingInfo.lastName || !shippingInfo.email || !shippingInfo.address) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required shipping information.",
+        duration: 3000,
+      });
+      return;
+    }
+    setCurrentTab('payment');
+  };
+
+  const handlePaymentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!paymentInfo.cardNumber || !paymentInfo.expiry || !paymentInfo.cvv || !paymentInfo.cardName) {
+      toast({
+        title: "Missing Payment Information",
+        description: "Please fill in all payment details.",
+        duration: 3000,
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+
+    // Simulate payment processing
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Clear cart and show success
+      clearCart();
+      
+      toast({
+        title: "🎉 Order Placed Successfully!",
+        description: `Your order of $${total.toFixed(2)} has been processed. You'll receive a confirmation email shortly.`,
+        duration: 5000,
+      });
+
+      // Redirect to success page
+      navigate('/');
+      
+    } catch (error) {
+      toast({
+        title: "Payment Failed",
+        description: "There was an issue processing your payment. Please try again.",
+        duration: 4000,
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  if (cartItems.length === 0) {
+    return (
+      <div className="min-h-screen bg-cream-50">
+        <Header />
+        <div className="container mx-auto px-4 py-8 pt-24 text-center">
+          <h1 className="text-3xl font-outfit font-bold text-forest-700 mb-4">Your cart is empty</h1>
+          <p className="text-sage-600 mb-8">Add some eco-friendly products to get started!</p>
+          <Button onClick={() => navigate('/products')} className="bg-forest-700 hover:bg-forest-800">
+            Continue Shopping
+          </Button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-cream-50">
       <Header />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 pt-24">
         <div className="max-w-6xl mx-auto">
           {/* Progress Bar */}
           <div className="mb-8">
             <div className="flex items-center justify-center space-x-4">
               <div className="flex items-center">
-                <div className="w-8 h-8 bg-forest-700 text-white rounded-full flex items-center justify-center text-sm">1</div>
-                <span className="ml-2 text-forest-700 font-medium">Shipping</span>
+                <div className={`w-8 h-8 ${currentTab === 'shipping' ? 'bg-forest-700' : 'bg-forest-700'} text-white rounded-full flex items-center justify-center text-sm`}>1</div>
+                <span className={`ml-2 ${currentTab === 'shipping' ? 'text-forest-700' : 'text-forest-700'} font-medium`}>Shipping</span>
               </div>
-              <div className="w-16 h-1 bg-forest-700"></div>
+              <div className={`w-16 h-1 ${currentTab === 'payment' ? 'bg-forest-700' : 'bg-sage-300'}`}></div>
               <div className="flex items-center">
-                <div className="w-8 h-8 bg-sage-300 text-white rounded-full flex items-center justify-center text-sm">2</div>
-                <span className="ml-2 text-sage-600">Payment</span>
+                <div className={`w-8 h-8 ${currentTab === 'payment' ? 'bg-forest-700' : 'bg-sage-300'} text-white rounded-full flex items-center justify-center text-sm`}>2</div>
+                <span className={`ml-2 ${currentTab === 'payment' ? 'text-forest-700' : 'text-sage-600'}`}>Payment</span>
               </div>
               <div className="w-16 h-1 bg-sage-200"></div>
               <div className="flex items-center">
@@ -64,64 +149,119 @@ const Checkout = () => {
               <div className="bg-white rounded-eco shadow-eco p-6">
                 <h2 className="text-2xl font-outfit font-bold text-forest-700 mb-6">Checkout</h2>
                 
-                <Tabs defaultValue="shipping" className="w-full">
+                <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
                   <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="shipping">Shipping Info</TabsTrigger>
                     <TabsTrigger value="payment">Payment</TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="shipping" className="mt-6">
-                    <form className="space-y-6">
+                    <form onSubmit={handleShippingSubmit} className="space-y-6">
                       <div>
                         <h3 className="text-lg font-semibold text-forest-700 mb-4">Shipping Address</h3>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <Label htmlFor="firstName">First Name</Label>
-                            <Input id="firstName" placeholder="John" />
+                            <Label htmlFor="firstName">First Name *</Label>
+                            <Input 
+                              id="firstName" 
+                              value={shippingInfo.firstName}
+                              onChange={(e) => setShippingInfo({...shippingInfo, firstName: e.target.value})}
+                              placeholder="John" 
+                              required
+                            />
                           </div>
                           <div>
-                            <Label htmlFor="lastName">Last Name</Label>
-                            <Input id="lastName" placeholder="Doe" />
+                            <Label htmlFor="lastName">Last Name *</Label>
+                            <Input 
+                              id="lastName" 
+                              value={shippingInfo.lastName}
+                              onChange={(e) => setShippingInfo({...shippingInfo, lastName: e.target.value})}
+                              placeholder="Doe" 
+                              required
+                            />
                           </div>
                         </div>
                         <div className="mt-4">
-                          <Label htmlFor="email">Email</Label>
-                          <Input id="email" type="email" placeholder="john@example.com" />
+                          <Label htmlFor="email">Email *</Label>
+                          <Input 
+                            id="email" 
+                            type="email" 
+                            value={shippingInfo.email}
+                            onChange={(e) => setShippingInfo({...shippingInfo, email: e.target.value})}
+                            placeholder="john@example.com" 
+                            required
+                          />
                         </div>
                         <div className="mt-4">
-                          <Label htmlFor="address">Address</Label>
-                          <Input id="address" placeholder="123 Main Street" />
+                          <Label htmlFor="address">Address *</Label>
+                          <Input 
+                            id="address" 
+                            value={shippingInfo.address}
+                            onChange={(e) => setShippingInfo({...shippingInfo, address: e.target.value})}
+                            placeholder="123 Main Street" 
+                            required
+                          />
                         </div>
                         <div className="grid grid-cols-3 gap-4 mt-4">
                           <div>
-                            <Label htmlFor="city">City</Label>
-                            <Input id="city" placeholder="New York" />
+                            <Label htmlFor="city">City *</Label>
+                            <Input 
+                              id="city" 
+                              value={shippingInfo.city}
+                              onChange={(e) => setShippingInfo({...shippingInfo, city: e.target.value})}
+                              placeholder="New York" 
+                              required
+                            />
                           </div>
                           <div>
-                            <Label htmlFor="state">State</Label>
-                            <Input id="state" placeholder="NY" />
+                            <Label htmlFor="state">State *</Label>
+                            <Input 
+                              id="state" 
+                              value={shippingInfo.state}
+                              onChange={(e) => setShippingInfo({...shippingInfo, state: e.target.value})}
+                              placeholder="NY" 
+                              required
+                            />
                           </div>
                           <div>
-                            <Label htmlFor="zip">ZIP Code</Label>
-                            <Input id="zip" placeholder="10001" />
+                            <Label htmlFor="zip">ZIP Code *</Label>
+                            <Input 
+                              id="zip" 
+                              value={shippingInfo.zip}
+                              onChange={(e) => setShippingInfo({...shippingInfo, zip: e.target.value})}
+                              placeholder="10001" 
+                              required
+                            />
                           </div>
                         </div>
                       </div>
 
                       <div className="flex items-center space-x-2">
-                        <Checkbox id="billing-same" />
+                        <Checkbox 
+                          id="billing-same" 
+                          checked={shippingInfo.billingIsSame}
+                          onCheckedChange={(checked) => setShippingInfo({...shippingInfo, billingIsSame: checked as boolean})}
+                        />
                         <Label htmlFor="billing-same">Billing address same as shipping</Label>
                       </div>
 
                       <div className="flex items-center space-x-2">
-                        <Checkbox id="save-info" />
+                        <Checkbox 
+                          id="save-info" 
+                          checked={shippingInfo.saveInfo}
+                          onCheckedChange={(checked) => setShippingInfo({...shippingInfo, saveInfo: checked as boolean})}
+                        />
                         <Label htmlFor="save-info">Save this information for next time</Label>
                       </div>
+
+                      <Button type="submit" className="w-full bg-forest-700 hover:bg-forest-800">
+                        Continue to Payment
+                      </Button>
                     </form>
                   </TabsContent>
                   
                   <TabsContent value="payment" className="mt-6">
-                    <form className="space-y-6">
+                    <form onSubmit={handlePaymentSubmit} className="space-y-6">
                       <div>
                         <h3 className="text-lg font-semibold text-forest-700 mb-4">Payment Method</h3>
                         <div className="space-y-3">
@@ -137,23 +277,65 @@ const Checkout = () => {
 
                       <div className="space-y-4">
                         <div>
-                          <Label htmlFor="cardNumber">Card Number</Label>
-                          <Input id="cardNumber" placeholder="1234 5678 9012 3456" />
+                          <Label htmlFor="cardNumber">Card Number *</Label>
+                          <Input 
+                            id="cardNumber" 
+                            value={paymentInfo.cardNumber}
+                            onChange={(e) => setPaymentInfo({...paymentInfo, cardNumber: e.target.value})}
+                            placeholder="1234 5678 9012 3456" 
+                            required
+                          />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <Label htmlFor="expiry">Expiry Date</Label>
-                            <Input id="expiry" placeholder="MM/YY" />
+                            <Label htmlFor="expiry">Expiry Date *</Label>
+                            <Input 
+                              id="expiry" 
+                              value={paymentInfo.expiry}
+                              onChange={(e) => setPaymentInfo({...paymentInfo, expiry: e.target.value})}
+                              placeholder="MM/YY" 
+                              required
+                            />
                           </div>
                           <div>
-                            <Label htmlFor="cvv">CVV</Label>
-                            <Input id="cvv" placeholder="123" />
+                            <Label htmlFor="cvv">CVV *</Label>
+                            <Input 
+                              id="cvv" 
+                              value={paymentInfo.cvv}
+                              onChange={(e) => setPaymentInfo({...paymentInfo, cvv: e.target.value})}
+                              placeholder="123" 
+                              required
+                            />
                           </div>
                         </div>
                         <div>
-                          <Label htmlFor="cardName">Name on Card</Label>
-                          <Input id="cardName" placeholder="John Doe" />
+                          <Label htmlFor="cardName">Name on Card *</Label>
+                          <Input 
+                            id="cardName" 
+                            value={paymentInfo.cardName}
+                            onChange={(e) => setPaymentInfo({...paymentInfo, cardName: e.target.value})}
+                            placeholder="John Doe" 
+                            required
+                          />
                         </div>
+                      </div>
+
+                      <div className="flex gap-4">
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          onClick={() => setCurrentTab('shipping')}
+                          className="flex-1"
+                        >
+                          Back to Shipping
+                        </Button>
+                        <Button 
+                          type="submit" 
+                          className="flex-1 bg-forest-700 hover:bg-forest-800"
+                          disabled={isProcessing}
+                        >
+                          {isProcessing ? 'Processing...' : `Complete Order - $${total.toFixed(2)}`}
+                        </Button>
                       </div>
                     </form>
                   </TabsContent>
@@ -170,10 +352,10 @@ const Checkout = () => {
                   Your Impact
                 </h3>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-sage-700">4.3kg CO₂</div>
+                  <div className="text-2xl font-bold text-sage-700">{(cartItems.length * 1.2).toFixed(1)}kg CO₂</div>
                   <div className="text-sm text-sage-600">Carbon footprint reduced</div>
                   <div className="text-xs text-sage-500 mt-2">
-                    🌱 Equivalent to planting 1 tree
+                    🌱 Equivalent to planting {cartItems.length} tree{cartItems.length !== 1 ? 's' : ''}
                   </div>
                 </div>
               </div>
@@ -182,7 +364,7 @@ const Checkout = () => {
               <div className="bg-white rounded-eco shadow-eco p-6">
                 <h3 className="font-semibold text-forest-700 mb-4">Order Summary</h3>
                 <div className="space-y-4 mb-6">
-                  {orderItems.map((item) => (
+                  {cartItems.map((item) => (
                     <div key={item.id} className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-lg overflow-hidden">
                         <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
@@ -214,10 +396,6 @@ const Checkout = () => {
                     <span className="text-forest-700">${total.toFixed(2)}</span>
                   </div>
                 </div>
-
-                <Button className="w-full mt-6 bg-forest-700 hover:bg-forest-800">
-                  Complete Order
-                </Button>
 
                 <div className="flex items-center justify-center gap-4 mt-4 text-xs text-sage-500">
                   <div className="flex items-center">
