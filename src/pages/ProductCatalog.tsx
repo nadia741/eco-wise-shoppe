@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -18,7 +17,7 @@ const ProductCatalog = () => {
   const searchQuery = searchParams.get('search') || '';
   
   const [filters, setFilters] = useState({
-    category: '',
+    category: 'all',
     priceRange: [0, 100],
     certifications: [] as string[],
     sustainabilityScore: 0,
@@ -50,8 +49,8 @@ const ProductCatalog = () => {
         }
       }
 
-      // Category filter
-      if (filters.category && product.category !== filters.category) {
+      // Category filter - updated to handle 'all' instead of empty string
+      if (filters.category && filters.category !== 'all' && product.category !== filters.category) {
         return false;
       }
 
@@ -127,7 +126,7 @@ const ProductCatalog = () => {
 
   const clearFilters = () => {
     setFilters({
-      category: '',
+      category: 'all',
       priceRange: [0, 100],
       certifications: [],
       sustainabilityScore: 0,
@@ -162,7 +161,7 @@ const ProductCatalog = () => {
                 </Button>
               </div>
 
-              {/* Category Filter */}
+              {/* Category Filter - Fixed the SelectItem value */}
               <div className="mb-6">
                 <Label className="text-sm font-medium text-forest-700 mb-3 block">Category</Label>
                 <Select value={filters.category} onValueChange={(value) => {
@@ -173,7 +172,7 @@ const ProductCatalog = () => {
                     <SelectValue placeholder="All Categories" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Categories</SelectItem>
+                    <SelectItem value="all">All Categories</SelectItem>
                     {categories.map(category => (
                       <SelectItem key={category} value={category}>
                         {category}
