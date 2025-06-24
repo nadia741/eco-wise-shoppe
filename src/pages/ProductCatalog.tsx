@@ -1,8 +1,10 @@
+
 import React, { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
+import CategoryFilter from '@/components/CategoryFilter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -10,7 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Filter, Grid, List, Search } from 'lucide-react';
-import { products } from '@/data/products';
+import { products, categories } from '@/data/products';
 
 const ProductCatalog = () => {
   const [searchParams] = useSearchParams();
@@ -18,6 +20,7 @@ const ProductCatalog = () => {
   
   const [filters, setFilters] = useState({
     category: 'all',
+    subcategory: 'all',
     priceRange: [0, 100],
     certifications: [] as string[],
     sustainabilityScore: 0,
@@ -29,7 +32,7 @@ const ProductCatalog = () => {
   const [showFilters, setShowFilters] = useState(false);
   const productsPerPage = 8;
 
-  const categories = [...new Set(products.map(p => p.category))];
+  const allCategories = [...Object.keys(categories), ...products.map(p => p.category).filter(c => c && !Object.keys(categories).includes(c))].filter((value, index, self) => self.indexOf(value) === index);
   const allCertifications = [...new Set(products.flatMap(p => p.certifications))];
 
   const filteredProducts = useMemo(() => {
@@ -40,17 +43,23 @@ const ProductCatalog = () => {
         const matchesName = product.name.toLowerCase().includes(query);
         const matchesDescription = product.description?.toLowerCase().includes(query);
         const matchesCategory = product.category?.toLowerCase().includes(query);
+        const matchesSubcategory = product.subcategory?.toLowerCase().includes(query);
         const matchesCertifications = product.certifications.some(cert => 
           cert.toLowerCase().includes(query)
         );
         
-        if (!matchesName && !matchesDescription && !matchesCategory && !matchesCertifications) {
+        if (!matchesName && !matchesDescription && !matchesCategory && !matchesSubcategory && !matchesCertifications) {
           return false;
         }
       }
 
-      // Category filter - updated to handle 'all' instead of empty string
+      // Category filter
       if (filters.category && filters.category !== 'all' && product.category !== filters.category) {
+        return false;
+      }
+
+      // Subcategory filter
+      if (filters.subcategory && filters.subcategory !== 'all' && product.subcategory !== filters.subcategory) {
         return false;
       }
 
@@ -127,6 +136,7 @@ const ProductCatalog = () => {
   const clearFilters = () => {
     setFilters({
       category: 'all',
+      subcategory: 'all',
       priceRange: [0, 100],
       certifications: [],
       sustainabilityScore: 0,
@@ -161,29 +171,22 @@ const ProductCatalog = () => {
                 </Button>
               </div>
 
-              {/* Category Filter - Fixed the SelectItem value */}
-              <div className="mb-6">
-                <Label className="text-sm font-medium text-forest-700 mb-3 block">Category</Label>
-                <Select value={filters.category} onValueChange={(value) => {
-                  setFilters(prev => ({ ...prev, category: value }));
+              {/* Category & Subcategory Filters */}
+              <CategoryFilter
+                selectedCategory={filters.category}
+                selectedSubcategory={filters.subcategory}
+                onCategoryChange={(category) => {
+                  setFilters(prev => ({ ...prev, category, subcategory: 'all' }));
                   setCurrentPage(1);
-                }}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Categories" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
-                    {categories.map(category => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                }}
+                onSubcategoryChange={(subcategory) => {
+                  setFilters(prev => ({ ...prev, subcategory }));
+                  setCurrentPage(1);
+                }}
+              />
 
               {/* Price Range Filter */}
-              <div className="mb-6">
+              <div className="mb-6 mt-6">
                 <Label className="text-sm font-medium text-forest-700 mb-3 block">
                   Price Range: ${filters.priceRange[0]} - ${filters.priceRange[1]}
                 </Label>
@@ -262,7 +265,6 @@ const ProductCatalog = () => {
               </div>
 
               <div className="flex items-center gap-4">
-                {/* Sort */}
                 <Select value={filters.sortBy} onValueChange={(value) => {
                   setFilters(prev => ({ ...prev, sortBy: value }));
                   setCurrentPage(1);
@@ -280,7 +282,6 @@ const ProductCatalog = () => {
                   </SelectContent>
                 </Select>
 
-                {/* View Mode */}
                 <div className="flex items-center border border-sage-200 rounded-lg p-1">
                   <Button
                     variant={viewMode === 'grid' ? 'default' : 'ghost'}
