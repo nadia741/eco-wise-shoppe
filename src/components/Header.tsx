@@ -54,6 +54,7 @@ const Header = () => {
   const navigationLinks = [
     { href: '/', label: 'Home' },
     { href: '/products', label: 'Products' },
+    { href: '/eco-features', label: 'Eco Features' },
     { href: '/about', label: 'About' },
     { href: '/blog', label: 'Blog' },
     { href: '/how-it-works', label: 'How It Works' }
