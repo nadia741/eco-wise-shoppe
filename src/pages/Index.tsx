@@ -2,6 +2,7 @@
 import React from 'react';
 import Header from '@/components/Header';
 import HeroSlider from '@/components/HeroSlider';
+import CategoryGrid from '@/components/CategoryGrid';
 import FeaturedProducts from '@/components/FeaturedProducts';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import SustainabilityMetrics from '@/components/SustainabilityMetrics';
@@ -18,6 +19,7 @@ const Index = () => {
     <div className="min-h-screen bg-cream-50">
       <Header />
       <HeroSlider />
+      <CategoryGrid />
       <FeaturedProducts />
       
       {/* New Eco Features Section */}
