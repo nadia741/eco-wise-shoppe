@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, User, Menu, Leaf, Heart, LogOut } from 'lucide-react';
@@ -54,10 +53,9 @@ const Header = () => {
   const navigationLinks = [
     { href: '/', label: 'Home' },
     { href: '/products', label: 'Products' },
-    { href: '/eco-features', label: 'Eco Features' },
     { href: '/about', label: 'About' },
     { href: '/blog', label: 'Blog' },
-    { href: '/how-it-works', label: 'How It Works' }
+    { href: '#impact', label: 'Impact' }
   ];
 
   return (
@@ -216,7 +214,7 @@ const Header = () => {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to="/signup" className="flex items-center">
+                      <Link to="/signup" className="flex items-components">
                         Sign Up
                       </Link>
                     </DropdownMenuItem>
