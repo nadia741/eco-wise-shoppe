@@ -21,6 +21,7 @@ import BlogPost from "./pages/BlogPost";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import EcoFeatures from "./pages/EcoFeatures";
+import Impact from "./pages/Impact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,6 +49,7 @@ const App = () => (
                 <Route path="/blog/:id" element={<BlogPost />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/impact" element={<Impact />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>

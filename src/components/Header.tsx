@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, User, Menu, Leaf, Heart, LogOut } from 'lucide-react';
@@ -55,7 +56,7 @@ const Header = () => {
     { href: '/products', label: 'Products' },
     { href: '/about', label: 'About' },
     { href: '/blog', label: 'Blog' },
-    { href: '#impact', label: 'Impact' }
+    { href: '/impact', label: 'Impact' }
   ];
 
   return (
@@ -97,7 +98,7 @@ const Header = () => {
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-sage-400" />
               <Input
                 type="text"
-                placeholder="Search eco-friendly products..."
+                placeholder="Search sustainable products..."
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 className="pl-12 pr-4 py-3 w-full border-sage-200 focus:border-tree-400 rounded-xl bg-white/80 backdrop-blur-sm"
@@ -144,6 +145,33 @@ const Header = () => {
             >
               <Search className="h-5 w-5" />
             </Button>
+
+            {/* Sustainability Score */}
+            <div className="hidden sm:flex items-center space-x-2 text-sage-600">
+              <span className="text-sm">Score:</span>
+              <span className="font-bold text-tree-600">94</span>
+            </div>
+
+            {/* User Auth Buttons */}
+            {!isAuthenticated && (
+              <div className="hidden sm:flex items-center space-x-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-sage-600 hover:text-tree-600"
+                  onClick={() => navigate('/login')}
+                >
+                  Sign In
+                </Button>
+                <Button
+                  size="sm"
+                  className="bg-tree-600 hover:bg-tree-700 text-white"
+                  onClick={() => navigate('/signup')}
+                >
+                  Join Now
+                </Button>
+              </div>
+            )}
 
             {/* Wishlist */}
             <Button
@@ -214,7 +242,7 @@ const Header = () => {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to="/signup" className="flex items-components">
+                      <Link to="/signup" className="flex items-center">
                         Sign Up
                       </Link>
                     </DropdownMenuItem>
