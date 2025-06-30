@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, User, Menu, Leaf, Heart, LogOut } from 'lucide-react';
@@ -21,7 +20,13 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useAuth();
-  const { getCartItemsCount, getWishlistItemsCount } = useCart();
+  const { getCartItemsCount, getWishlistItemsCount, cartItems, getCartTotal } = useCart();
+
+  // Calculate dynamic sustainability score - same logic as profile
+  const totalOrders = cartItems.length > 0 ? Math.max(1, Math.floor(cartItems.length / 3)) : 0;
+  const totalSpent = getCartTotal();
+  const treesPlanted = Math.floor(totalSpent / 15); // 1 tree per $15 spent
+  const sustainabilityScore = Math.min(100, Math.floor(totalSpent * 2) + (treesPlanted * 5) + (totalOrders * 3));
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,7 +154,7 @@ const Header = () => {
             {/* Sustainability Score */}
             <div className="hidden sm:flex items-center space-x-2 text-sage-600">
               <span className="text-sm">Score:</span>
-              <span className="font-bold text-tree-600">94</span>
+              <span className="font-bold text-tree-600">{sustainabilityScore}</span>
             </div>
 
             {/* User Auth Buttons */}
