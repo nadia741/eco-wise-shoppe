@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -29,8 +28,8 @@ const Profile = () => {
   const co2Saved = (totalSpent * 0.035).toFixed(1); // 35g CO2 per dollar spent
   const treesPlanted = Math.floor(totalSpent / 15); // 1 tree per $15 spent
   
-  // Calculate sustainability score based on shopping activity
-  const baseSustainabilityScore = Math.min(87, Math.floor(totalSpent * 2) + (treesPlanted * 3) + 30);
+  // Calculate sustainability score - same as homepage (starts at 94)
+  const baseSustainabilityScore = Math.min(100, 94 + Math.floor(totalSpent * 0.5) + (treesPlanted * 1));
 
   const profileData = {
     name: "Eco Enthusiast",
@@ -93,7 +92,7 @@ const Profile = () => {
                 <User className="h-12 w-12" />
               </div>
               <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">{profileData.sustainabilityScore}%</span>
+                <span className="text-white text-xs font-bold">{profileData.sustainabilityScore}</span>
               </div>
             </div>
             
@@ -117,7 +116,7 @@ const Profile = () => {
               <div className="mt-4">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-sm font-medium text-forest-700">Sustainability Score</span>
-                  <span className="text-2xl font-bold text-tree-600">{profileData.sustainabilityScore}%</span>
+                  <span className="text-2xl font-bold text-tree-600">{profileData.sustainabilityScore}</span>
                 </div>
                 <div className="w-full bg-sage-100 rounded-full h-3">
                   <div 
