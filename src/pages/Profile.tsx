@@ -16,9 +16,11 @@ import {
   TreePine,
   Star
 } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('Order History');
+  const { cartItems, getCartTotal } = useCart();
 
   const profileData = {
     name: "Eco Enthusiast",
@@ -29,64 +31,49 @@ const Profile = () => {
     loyaltyPoints: 1450
   };
 
+  // Calculate shopping-based stats (same as homepage)
+  const totalOrders = cartItems.length > 0 ? Math.max(1, Math.floor(cartItems.length / 3)) : 0;
+  const totalSpent = getCartTotal();
+  const co2Saved = (totalSpent * 0.035).toFixed(1); // 35g CO2 per dollar spent
+  const treesPlanted = Math.floor(totalSpent / 15); // 1 tree per $15 spent
+
   const statsData = [
     {
       icon: <Package className="h-8 w-8 text-tree-600" />,
-      value: "3",
+      value: totalOrders.toString(),
       label: "Total Orders"
     },
     {
       icon: <TrendingUp className="h-8 w-8 text-tree-600" />,
-      value: "$314.19",
+      value: `$${totalSpent.toFixed(2)}`,
       label: "Total Spent"
     },
     {
       icon: <Droplets className="h-8 w-8 text-blue-600" />,
-      value: "11.1kg",
+      value: `${co2Saved}kg`,
       label: "CO₂ Saved"
     },
     {
       icon: <TreePine className="h-8 w-8 text-forest-600" />,
-      value: "6",
+      value: treesPlanted.toString(),
       label: "Trees Planted"
     }
   ];
 
-  const orderHistory = [
-    {
-      id: "#GW001234",
-      date: "1/15/2024",
-      items: [
-        { name: "Bamboo Water Bottle", quantity: 1, price: 24.99 },
-        { name: "Organic Cotton Tote Bag", quantity: 2, price: 65.00 }
-      ],
-      total: 89.99,
-      status: "delivered",
-      impact: { co2: "3.2kg", trees: 2 }
-    },
-    {
-      id: "#GW001235",
-      date: "1/8/2024",
-      items: [
-        { name: "Solar Power Bank", quantity: 1, price: 79.99 },
-        { name: "Reusable Food Wraps", quantity: 3, price: 76.77 }
-      ],
-      total: 156.76,
-      status: "delivered",
-      impact: { co2: "5.8kg", trees: 3 }
-    },
-    {
-      id: "#GW001236",
-      date: "1/2/2024",
-      items: [
-        { name: "Bamboo Toothbrush Set", quantity: 1, price: 18.99 },
-        { name: "Eco-Friendly Cleaners", quantity: 2, price: 48.46 }
-      ],
-      total: 67.45,
-      status: "shipped",
-      impact: { co2: "2.1kg", trees: 1 }
+  // Generate order history based on cart items
+  const orderHistory = cartItems.length > 0 ? cartItems.map((item, index) => ({
+    id: `#GW00${1234 + index}`,
+    date: new Date(Date.now() - index * 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+    items: [
+      { name: item.name, quantity: item.quantity, price: item.price }
+    ],
+    total: item.price * item.quantity,
+    status: index === 0 ? "shipped" : "delivered",
+    impact: { 
+      co2: `${(item.price * item.quantity * 0.035).toFixed(1)}kg`, 
+      trees: Math.floor((item.price * item.quantity) / 15) 
     }
-  ];
+  })) : [];
 
   const tabs = ['Order History', 'Environmental Impact', 'Statistics', 'Certifications'];
 
@@ -186,61 +173,75 @@ const Profile = () => {
               <h2 className="text-2xl font-outfit font-bold text-forest-700">Order History</h2>
             </div>
             
-            {orderHistory.map((order, index) => (
-              <Card key={index} className="bg-white/90 backdrop-blur-sm border-sage-200 overflow-hidden">
-                <CardHeader className="pb-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-forest-700 text-lg">
-                        Order {order.id}
-                      </CardTitle>
-                      <p className="text-sage-500 text-sm">{order.date}</p>
-                    </div>
-                    <Badge 
-                      className={`${
-                        order.status === 'delivered' 
-                          ? 'bg-tree-100 text-tree-700 border-tree-300' 
-                          : 'bg-blue-100 text-blue-700 border-blue-300'
-                      }`}
-                    >
-                      {order.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                
-                <CardContent>
-                  <div className="space-y-3 mb-4">
-                    {order.items.map((item, itemIndex) => (
-                      <div key={itemIndex} className="flex justify-between items-center">
-                        <div>
-                          <span className="font-medium text-forest-700">{item.name}</span>
-                          <span className="text-sage-500 ml-2">(x{item.quantity})</span>
-                        </div>
-                        <span className="font-semibold text-forest-700">${item.price}</span>
+            {orderHistory.length === 0 ? (
+              <div className="text-center py-20">
+                <ShoppingBag className="h-16 w-16 text-sage-300 mx-auto mb-4" />
+                <h3 className="text-xl font-outfit font-bold text-forest-700 mb-2">No Orders Yet</h3>
+                <p className="text-sage-600 mb-6">Start shopping to see your order history here!</p>
+                <Button 
+                  className="bg-tree-600 hover:bg-tree-700 text-white"
+                  onClick={() => window.location.href = '/products'}
+                >
+                  Browse Products
+                </Button>
+              </div>
+            ) : (
+              orderHistory.map((order, index) => (
+                <Card key={index} className="bg-white/90 backdrop-blur-sm border-sage-200 overflow-hidden">
+                  <CardHeader className="pb-4">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <CardTitle className="text-forest-700 text-lg">
+                          Order {order.id}
+                        </CardTitle>
+                        <p className="text-sage-500 text-sm">{order.date}</p>
                       </div>
-                    ))}
-                  </div>
-                  
-                  <div className="flex justify-between items-center pt-4 border-t border-sage-200 mb-4">
-                    <span className="font-bold text-forest-700 text-lg">Total: ${order.total}</span>
-                    <Button variant="outline" size="sm" className="border-tree-300 text-tree-600 hover:bg-tree-50">
-                      View Details
-                    </Button>
-                  </div>
-                  
-                  <div className="flex items-center gap-6 text-sm bg-tree-50 rounded-lg p-3">
-                    <div className="flex items-center gap-2">
-                      <Droplets className="h-4 w-4 text-blue-600" />
-                      <span>{order.impact.co2} CO₂ saved</span>
+                      <Badge 
+                        className={`${
+                          order.status === 'delivered' 
+                            ? 'bg-tree-100 text-tree-700 border-tree-300' 
+                            : 'bg-blue-100 text-blue-700 border-blue-300'
+                        }`}
+                      >
+                        {order.status}
+                      </Badge>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <TreePine className="h-4 w-4 text-forest-600" />
-                      <span>{order.impact.trees} trees planted</span>
+                  </CardHeader>
+                  
+                  <CardContent>
+                    <div className="space-y-3 mb-4">
+                      {order.items.map((item, itemIndex) => (
+                        <div key={itemIndex} className="flex justify-between items-center">
+                          <div>
+                            <span className="font-medium text-forest-700">{item.name}</span>
+                            <span className="text-sage-500 ml-2">(x{item.quantity})</span>
+                          </div>
+                          <span className="font-semibold text-forest-700">${item.price}</span>
+                        </div>
+                      ))}
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                    
+                    <div className="flex justify-between items-center pt-4 border-t border-sage-200 mb-4">
+                      <span className="font-bold text-forest-700 text-lg">Total: ${order.total.toFixed(2)}</span>
+                      <Button variant="outline" size="sm" className="border-tree-300 text-tree-600 hover:bg-tree-50">
+                        View Details
+                      </Button>
+                    </div>
+                    
+                    <div className="flex items-center gap-6 text-sm bg-tree-50 rounded-lg p-3">
+                      <div className="flex items-center gap-2">
+                        <Droplets className="h-4 w-4 text-blue-600" />
+                        <span>{order.impact.co2} CO₂ saved</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <TreePine className="h-4 w-4 text-forest-600" />
+                        <span>{order.impact.trees} trees planted</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
           </div>
         )}
 
