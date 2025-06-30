@@ -28,8 +28,8 @@ const Profile = () => {
   const co2Saved = (totalSpent * 0.035).toFixed(1); // 35g CO2 per dollar spent
   const treesPlanted = Math.floor(totalSpent / 15); // 1 tree per $15 spent
   
-  // Calculate sustainability score - same as homepage (starts at 94)
-  const baseSustainabilityScore = Math.min(100, 94 + Math.floor(totalSpent * 0.5) + (treesPlanted * 1));
+  // Calculate sustainability score - starts from 0 and increases based on shopping
+  const baseSustainabilityScore = Math.min(100, Math.floor(totalSpent * 2) + (treesPlanted * 5) + (totalOrders * 3));
 
   const profileData = {
     name: "Eco Enthusiast",
