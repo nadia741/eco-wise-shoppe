@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -22,20 +23,22 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState('Order History');
   const { cartItems, getCartTotal } = useCart();
 
-  const profileData = {
-    name: "Eco Enthusiast",
-    email: "hellonadia321@gmail.com",
-    memberSince: "2023",
-    sustainabilityScore: 87,
-    goldMember: true,
-    loyaltyPoints: 1450
-  };
-
   // Calculate shopping-based stats (same as homepage)
   const totalOrders = cartItems.length > 0 ? Math.max(1, Math.floor(cartItems.length / 3)) : 0;
   const totalSpent = getCartTotal();
   const co2Saved = (totalSpent * 0.035).toFixed(1); // 35g CO2 per dollar spent
   const treesPlanted = Math.floor(totalSpent / 15); // 1 tree per $15 spent
+  
+  // Calculate sustainability score based on shopping activity
+  const baseSustainabilityScore = Math.min(87, Math.floor(totalSpent * 2) + (treesPlanted * 3) + 30);
+
+  const profileData = {
+    name: "Eco Enthusiast",
+    email: "hellonadia321@gmail.com",
+    memberSince: "2023",
+    sustainabilityScore: baseSustainabilityScore,
+    goldMember: true,
+  };
 
   const statsData = [
     {
@@ -90,7 +93,7 @@ const Profile = () => {
                 <User className="h-12 w-12" />
               </div>
               <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">87%</span>
+                <span className="text-white text-xs font-bold">{profileData.sustainabilityScore}%</span>
               </div>
             </div>
             
@@ -108,7 +111,6 @@ const Profile = () => {
               </div>
               <p className="text-sage-600 mb-2">{profileData.email}</p>
               <div className="flex items-center gap-4 text-sm text-sage-500">
-                <span>⭐ {profileData.loyaltyPoints} Points</span>
                 <span>Member since {profileData.memberSince}</span>
               </div>
               
