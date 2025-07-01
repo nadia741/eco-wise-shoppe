@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
+import { useRewards } from '@/contexts/RewardsContext';
 import { getSpellingSuggestions } from '@/utils/spellCheck';
 
 const Header = () => {
@@ -20,13 +21,8 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useAuth();
-  const { getCartItemsCount, getWishlistItemsCount, cartItems, getCartTotal } = useCart();
-
-  // Calculate dynamic sustainability score - same logic as profile
-  const totalOrders = cartItems.length > 0 ? Math.max(1, Math.floor(cartItems.length / 3)) : 0;
-  const totalSpent = getCartTotal();
-  const treesPlanted = Math.floor(totalSpent / 15); // 1 tree per $15 spent
-  const sustainabilityScore = Math.min(100, Math.floor(totalSpent * 2) + (treesPlanted * 5) + (totalOrders * 3));
+  const { getCartItemsCount, getWishlistItemsCount } = useCart();
+  const { points: sustainabilityScore } = useRewards();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

@@ -14,13 +14,16 @@ import {
   Leaf,
   Droplets,
   TreePine,
-  Star
+  Star,
+  Gift
 } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
+import { useRewards } from '@/contexts/RewardsContext';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('Order History');
   const { cartItems, getCartTotal } = useCart();
+  const { points, tier, availableOffers, claimOffer } = useRewards();
 
   // Calculate shopping-based stats (same as homepage)
   const totalOrders = cartItems.length > 0 ? Math.max(1, Math.floor(cartItems.length / 3)) : 0;
@@ -35,7 +38,7 @@ const Profile = () => {
     name: "Eco Enthusiast",
     email: "hellonadia321@gmail.com",
     memberSince: "2023",
-    sustainabilityScore: baseSustainabilityScore,
+    sustainabilityScore: points,
     goldMember: true,
   };
 
@@ -77,7 +80,7 @@ const Profile = () => {
     }
   })) : [];
 
-  const tabs = ['Order History', 'Environmental Impact', 'Statistics', 'Certifications'];
+  const tabs = ['Order History', 'Rewards & Offers', 'Environmental Impact', 'Statistics'];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sage-50/30 to-cream-50">
@@ -104,7 +107,7 @@ const Profile = () => {
                 {profileData.goldMember && (
                   <Badge className="bg-yellow-100 text-yellow-800 border-yellow-300">
                     <Star className="h-3 w-3 mr-1" />
-                    Gold Member
+                    {tier} Member
                   </Badge>
                 )}
               </div>
@@ -121,7 +124,7 @@ const Profile = () => {
                 <div className="w-full bg-sage-100 rounded-full h-3">
                   <div 
                     className="bg-gradient-to-r from-tree-500 to-forest-600 h-3 rounded-full transition-all duration-500"
-                    style={{ width: `${profileData.sustainabilityScore}%` }}
+                    style={{ width: `${Math.min(100, (profileData.sustainabilityScore / 500) * 100)}%` }}
                   ></div>
                 </div>
               </div>
@@ -246,8 +249,65 @@ const Profile = () => {
           </div>
         )}
 
+        {/* Rewards & Offers Tab */}
+        {activeTab === 'Rewards & Offers' && (
+          <div className="space-y-6 animate-fade-in-up">
+            <div className="flex items-center gap-3 mb-6">
+              <Gift className="h-6 w-6 text-forest-700" />
+              <h2 className="text-2xl font-outfit font-bold text-forest-700">Rewards & Special Offers</h2>
+            </div>
+            
+            {/* Current Points */}
+            <Card className="bg-gradient-to-br from-tree-50 to-forest-50 border-tree-200">
+              <CardContent className="p-6 text-center">
+                <div className="text-4xl font-outfit font-bold text-tree-600 mb-2">{points}</div>
+                <div className="text-forest-700 font-medium mb-4">Sustainability Points</div>
+                <div className="text-sm text-sage-600">
+                  {50 - (points % 50)} more points until your next special offer!
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Available Offers */}
+            {availableOffers.length > 0 && (
+              <div className="space-y-4">
+                <h3 className="text-xl font-outfit font-bold text-forest-700">Available Offers</h3>
+                {availableOffers.map((offer, index) => (
+                  <Card key={index} className="bg-white/90 backdrop-blur-sm border-yellow-300 border-2">
+                    <CardContent className="p-6 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                          <Gift className="h-6 w-6 text-yellow-600" />
+                        </div>
+                        <div>
+                          <div className="font-bold text-forest-700">{offer}</div>
+                          <div className="text-sm text-sage-600">Limited time offer</div>
+                        </div>
+                      </div>
+                      <Button 
+                        onClick={() => claimOffer(offer)}
+                        className="bg-yellow-500 hover:bg-yellow-600 text-white"
+                      >
+                        Claim Offer
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+
+            {availableOffers.length === 0 && (
+              <div className="text-center py-12">
+                <Gift className="h-16 w-16 text-sage-300 mx-auto mb-4" />
+                <h3 className="text-xl font-outfit font-bold text-forest-700 mb-2">No Offers Available</h3>
+                <p className="text-sage-600">Keep shopping to unlock special offers every 50 points!</p>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Other tabs content would go here */}
-        {activeTab !== 'Order History' && (
+        {(activeTab === 'Environmental Impact' || activeTab === 'Statistics') && (
           <div className="text-center py-20 animate-fade-in-up">
             <div className="text-6xl mb-4">🚧</div>
             <h3 className="text-2xl font-outfit font-bold text-forest-700 mb-4">

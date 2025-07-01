@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -28,6 +29,7 @@ interface CartContextType {
   getCartTotal: () => number;
   getCartItemsCount: () => number;
   getWishlistItemsCount: () => number;
+  purchaseComplete: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -119,6 +121,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCartItems([]);
   };
 
+  const purchaseComplete = () => {
+    // This function will be called when a purchase is completed
+    // The rewards logic will be handled in the checkout process
+    clearCart();
+  };
+
   const getCartTotal = () => {
     return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
@@ -143,7 +151,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       clearCart,
       getCartTotal,
       getCartItemsCount,
-      getWishlistItemsCount
+      getWishlistItemsCount,
+      purchaseComplete
     }}>
       {children}
     </CartContext.Provider>

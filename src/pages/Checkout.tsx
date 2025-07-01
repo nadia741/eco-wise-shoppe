@@ -10,12 +10,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CreditCard, Truck, Shield, Leaf } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRewards } from '@/contexts/RewardsContext';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const { cartItems, getCartTotal, clearCart } = useCart();
   const { user } = useAuth();
+  const { earnPoints } = useRewards();
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -78,12 +80,18 @@ const Checkout = () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
+      // Award points for each item purchased
+      cartItems.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        earnPoints(itemTotal);
+      });
+      
       // Clear cart and show success
       clearCart();
       
       toast({
         title: "🎉 Order Placed Successfully!",
-        description: `Your order of $${total.toFixed(2)} has been processed. You'll receive a confirmation email shortly.`,
+        description: `Your order of $${total.toFixed(2)} has been processed. You've earned sustainability points!`,
         duration: 5000,
       });
 
