@@ -15,7 +15,8 @@ import {
   Droplets,
   TreePine,
   Star,
-  Gift
+  Gift,
+  Heart
 } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useRewards } from '@/contexts/RewardsContext';
@@ -80,7 +81,7 @@ const Profile = () => {
     }
   })) : [];
 
-  const tabs = ['Order History', 'Rewards & Offers', 'Environmental Impact', 'Statistics'];
+  const tabs = ['Order History', 'Wishlist', 'Rewards & Offers', 'Environmental Impact', 'Statistics'];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sage-50/30 to-cream-50">
@@ -249,6 +250,28 @@ const Profile = () => {
           </div>
         )}
 
+        {/* Wishlist Tab */}
+        {activeTab === 'Wishlist' && (
+          <div className="space-y-6 animate-fade-in-up">
+            <div className="flex items-center gap-3 mb-6">
+              <Heart className="h-6 w-6 text-forest-700" />
+              <h2 className="text-2xl font-outfit font-bold text-forest-700">My Wishlist</h2>
+            </div>
+            
+            <div className="text-center py-12">
+              <Heart className="h-16 w-16 text-sage-300 mx-auto mb-4" />
+              <h3 className="text-xl font-outfit font-bold text-forest-700 mb-2">Your Wishlist is Empty</h3>
+              <p className="text-sage-600 mb-6">Save products you love to your wishlist for easy access later!</p>
+              <Button 
+                className="bg-tree-600 hover:bg-tree-700 text-white"
+                onClick={() => window.location.href = '/products'}
+              >
+                Browse Products
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Rewards & Offers Tab */}
         {activeTab === 'Rewards & Offers' && (
           <div className="space-y-6 animate-fade-in-up">
@@ -263,7 +286,7 @@ const Profile = () => {
                 <div className="text-4xl font-outfit font-bold text-tree-600 mb-2">{points}</div>
                 <div className="text-forest-700 font-medium mb-4">Sustainability Points</div>
                 <div className="text-sm text-sage-600">
-                  {50 - (points % 50)} more points until your next special offer!
+                  {20 - (points % 20)} more points until your next special discount!
                 </div>
               </CardContent>
             </Card>
@@ -300,7 +323,7 @@ const Profile = () => {
               <div className="text-center py-12">
                 <Gift className="h-16 w-16 text-sage-300 mx-auto mb-4" />
                 <h3 className="text-xl font-outfit font-bold text-forest-700 mb-2">No Offers Available</h3>
-                <p className="text-sage-600">Keep shopping to unlock special offers every 50 points!</p>
+                <p className="text-sage-600">Keep shopping to unlock special discounts every 20 points!</p>
               </div>
             )}
           </div>

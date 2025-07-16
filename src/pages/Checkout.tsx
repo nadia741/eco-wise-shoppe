@@ -80,10 +80,11 @@ const Checkout = () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Award points for each item purchased
+      // Award 3 points for each product purchased
       cartItems.forEach(item => {
-        const itemTotal = item.price * item.quantity;
-        earnPoints(itemTotal);
+        for (let i = 0; i < item.quantity; i++) {
+          earnPoints(item.price); // 3 points per product
+        }
       });
       
       // Clear cart and show success
@@ -278,6 +279,13 @@ const Checkout = () => {
                             <Label htmlFor="credit-card" className="flex items-center">
                               <CreditCard className="h-4 w-4 mr-2" />
                               Credit Card
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <input type="radio" id="cash-delivery" name="payment" className="text-forest-700" />
+                            <Label htmlFor="cash-delivery" className="flex items-center">
+                              <Truck className="h-4 w-4 mr-2" />
+                              Cash on Delivery
                             </Label>
                           </div>
                         </div>

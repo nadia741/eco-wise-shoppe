@@ -116,12 +116,16 @@ const Header = () => {
             {/* Search Suggestions */}
             {searchSuggestions.length > 0 && (
               <div className="absolute top-full left-0 right-0 bg-white border border-sage-200 rounded-lg shadow-lg mt-1 z-50 animate-fade-in">
-                <div className="p-2 text-sm text-sage-600 border-b">Did you mean:</div>
+                <div className="p-2 text-sm text-sage-600 border-b">Suggestions:</div>
                 {searchSuggestions.map((suggestion, index) => (
                   <button
                     key={index}
-                    onClick={() => applySuggestion(suggestion)}
-                    className="w-full text-left px-3 py-2 hover:bg-tree-50 text-tree-600 capitalize"
+                    onClick={() => {
+                      setSearchQuery(suggestion);
+                      setSearchSuggestions([]);
+                      navigate(`/products?search=${encodeURIComponent(suggestion)}`);
+                    }}
+                    className="w-full text-left px-3 py-2 hover:bg-tree-50 text-tree-600"
                   >
                     {suggestion}
                   </button>
@@ -153,41 +157,24 @@ const Header = () => {
               <span className="font-bold text-tree-600">{sustainabilityScore}</span>
             </div>
 
-            {/* User Auth Buttons */}
-            {!isAuthenticated && (
-              <div className="hidden sm:flex items-center space-x-2">
+            {/* Wishlist - only visible when authenticated */}
+            {isAuthenticated && (
+              <Link to="/profile">
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-sage-600 hover:text-tree-600"
-                  onClick={() => navigate('/login')}
+                  className="hidden sm:flex items-center space-x-2 text-sage-600 hover:text-tree-600 relative hover-scale"
                 >
-                  Sign In
+                  <Heart className="h-5 w-5" />
+                  <span className="hidden lg:inline text-sm font-medium">Wishlist</span>
+                  {getWishlistItemsCount() > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-coral text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse">
+                      {getWishlistItemsCount()}
+                    </span>
+                  )}
                 </Button>
-                <Button
-                  size="sm"
-                  className="bg-tree-600 hover:bg-tree-700 text-white"
-                  onClick={() => navigate('/signup')}
-                >
-                  Join Now
-                </Button>
-              </div>
+              </Link>
             )}
-
-            {/* Wishlist */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="hidden sm:flex items-center space-x-2 text-sage-600 hover:text-tree-600 relative hover-scale"
-            >
-              <Heart className="h-5 w-5" />
-              <span className="hidden lg:inline text-sm font-medium">Wishlist</span>
-              {getWishlistItemsCount() > 0 && (
-                <span className="absolute -top-1 -right-1 bg-coral text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse">
-                  {getWishlistItemsCount()}
-                </span>
-              )}
-            </Button>
 
             {/* Cart */}
             <Link to="/cart">

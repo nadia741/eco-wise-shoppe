@@ -14,10 +14,17 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login attempt:', { email, password, rememberMe });
+    
     // Add authentication logic here
+    try {
+      // This would be replaced with actual login logic
+      console.log('Login attempt:', { email, password, rememberMe });
+      // For now, just simulate successful login
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
   };
 
   return (
@@ -106,7 +113,7 @@ const Login = () => {
                   />
                   <span className="ml-2 text-sm text-sage-600">Remember me</span>
                 </label>
-                <Link to="/forgot-password" className="text-sm text-sage-600 hover:text-sage-800">
+                <Link to="/forgot-password" className="text-sm text-tree-600 hover:text-tree-700">
                   Forgot password?
                 </Link>
               </div>

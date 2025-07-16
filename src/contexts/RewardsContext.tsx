@@ -47,35 +47,29 @@ export const RewardsProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const tier = getCurrentTier();
 
   const earnPoints = (amount: number) => {
-    const multiplier = tierBenefits[tier].multiplier;
-    // Points calculation: 3-9 points based on price
-    // $1-10 = 3 points, $11-25 = 5 points, $26-50 = 7 points, $50+ = 9 points
-    let basePoints = 3;
-    if (amount >= 50) basePoints = 9;
-    else if (amount >= 26) basePoints = 7;
-    else if (amount >= 11) basePoints = 5;
-    
-    const pointsEarned = Math.floor(basePoints * multiplier);
+    // Fixed 3 points per product purchase
+    const pointsEarned = 3;
     const oldPoints = points;
     const newPoints = oldPoints + pointsEarned;
     
     setPoints(newPoints);
     
-    // Check for special offers every 50 points
-    const oldTier = Math.floor(oldPoints / 50);
-    const newTier = Math.floor(newPoints / 50);
+    // Check for special discounts every 20 points
+    const oldDiscountTier = Math.floor(oldPoints / 20);
+    const newDiscountTier = Math.floor(newPoints / 20);
     
-    if (newTier > oldTier) {
+    if (newDiscountTier > oldDiscountTier) {
       const newOffers = [];
-      for (let i = oldTier + 1; i <= newTier; i++) {
-        const offer = `${i * 10}% OFF your next purchase!`;
+      for (let i = oldDiscountTier + 1; i <= newDiscountTier; i++) {
+        const discountPercent = Math.min(15, i * 5); // 5%, 10%, 15% max
+        const offer = `${discountPercent}% OFF your next purchase!`;
         newOffers.push(offer);
       }
       setAvailableOffers(prev => [...prev, ...newOffers]);
       
       toast({
-        title: "🎉 Special Offer Unlocked!",
-        description: `You've earned ${pointsEarned} points! New offer available: ${newOffers[0]}`,
+        title: "🎉 Special Discount Unlocked!",
+        description: `You've earned ${pointsEarned} points! New discount available: ${newOffers[0]}`,
         duration: 5000,
       });
     } else {
@@ -96,13 +90,8 @@ export const RewardsProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const getPointsFromPurchase = (purchaseAmount: number): number => {
-    const multiplier = tierBenefits[tier].multiplier;
-    let basePoints = 3;
-    if (purchaseAmount >= 50) basePoints = 9;
-    else if (purchaseAmount >= 26) basePoints = 7;
-    else if (purchaseAmount >= 11) basePoints = 5;
-    
-    return Math.floor(basePoints * multiplier);
+    // Fixed 3 points per product
+    return 3;
   };
 
   const claimOffer = (offer: string) => {

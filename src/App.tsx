@@ -13,6 +13,7 @@ import ProductCatalog from "./pages/ProductCatalog";
 import ProductDetails from "./pages/ProductDetails";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
 import HowItWorks from "./pages/HowItWorks";
@@ -41,6 +42,7 @@ const App = () => (
                 <Route path="/product/:id" element={<ProductDetails />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/how-it-works" element={<HowItWorks />} />
