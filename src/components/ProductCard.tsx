@@ -143,12 +143,13 @@ const ProductCard = ({
   };
 
   const handleProductClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     navigate(`/product/${id}`);
   };
 
   return (
     <div 
-      className="group bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-700 overflow-hidden hover:-translate-y-4 cursor-pointer border border-sage-100 hover:border-tree-300 animate-fade-in-scale card-hover"
+      className="group bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-700 overflow-hidden hover:-translate-y-4 cursor-pointer border border-sage-100 hover:border-tree-300 animate-fade-in-scale card-hover h-[500px] flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleProductClick}
@@ -213,22 +214,10 @@ const ProductCard = ({
           </Button>
         </div>
 
-        {/* Sustainability Score with float animation */}
-        <div className="absolute bottom-4 left-4 animate-float">
-          <div className="flex items-center space-x-2 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-xl border border-white/50">
-            <Leaf className="h-4 w-4 text-tree-500 animate-wiggle" />
-            <div className="flex items-center space-x-2">
-              <div className={`w-3 h-3 rounded-full ${getSustainabilityColor(sustainabilityScore)} animate-pulse`}></div>
-              <span className="text-sm font-semibold text-forest-700">
-                {getSustainabilityText(sustainabilityScore)}
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Content Section */}
-      <div className="p-6 space-y-4">
+      <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
         {/* Rating and Carbon Footprint */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -250,8 +239,8 @@ const ProductCard = ({
         </div>
 
         {/* Product Name with shimmer effect */}
-        <h3 className="font-outfit font-bold text-forest-700 line-clamp-2 leading-tight text-lg hover:text-tree-600 transition-colors shimmer">
-          {name}
+        <h3 className="font-outfit font-bold text-forest-700 line-clamp-2 leading-tight text-lg hover:text-tree-600 transition-colors shimmer truncate">
+          {name.length > 40 ? `${name.substring(0, 40)}...` : name}
         </h3>
 
         {/* Category */}

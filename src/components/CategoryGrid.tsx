@@ -102,9 +102,6 @@ const CategoryGrid = () => {
                   {category.description}
                 </p>
                 
-                <div className="text-forest-600 font-semibold text-sm">
-                  {category.count} products
-                </div>
               </CardContent>
             </Card>
           ))}

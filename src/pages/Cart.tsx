@@ -64,7 +64,7 @@ const Cart = () => {
                       style={{ animationDelay: `${index * 0.1}s` }}
                     >
                       {/* Product Image */}
-                      <div className="w-24 h-24 rounded-lg overflow-hidden hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                      <div className="w-20 h-20 rounded-lg overflow-hidden hover:scale-110 transition-transform duration-300 flex-shrink-0">
                         <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                       </div>
                       

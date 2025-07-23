@@ -1,29 +1,53 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
-    // Add authentication logic here
     try {
-      // This would be replaced with actual login logic
-      console.log('Login attempt:', { email, password, rememberMe });
-      // For now, just simulate successful login
+      const success = await login(email, password);
+      if (success) {
+        toast({
+          title: "🎉 Welcome back!",
+          description: "You have successfully signed in.",
+          duration: 3000,
+        });
+        navigate('/');
+      } else {
+        toast({
+          title: "Login Failed",
+          description: "Invalid email or password. Please try again.",
+          duration: 3000,
+        });
+      }
     } catch (error) {
-      console.error('Login failed:', error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        duration: 3000,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -118,8 +142,12 @@ const Login = () => {
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full bg-sage-500 hover:bg-sage-600">
-                Sign In
+              <Button 
+                type="submit" 
+                className="w-full bg-forest-700 hover:bg-forest-800"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Signing In...' : 'Sign In'}
               </Button>
             </form>
 

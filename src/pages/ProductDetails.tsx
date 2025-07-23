@@ -182,8 +182,8 @@ const ProductDetails = () => {
               />
             </div>
             
-            <div className="grid grid-cols-4 gap-3">
-              {product.images.map((image, index) => (
+            <div className="grid grid-cols-3 gap-3">
+              {product.images.slice(0, 3).map((image, index) => (
                 <div 
                   key={index} 
                   className={`aspect-square bg-white rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover-lift ${
@@ -341,7 +341,7 @@ const ProductDetails = () => {
         </div>
 
         {/* Reviews Section */}
-        <div className="mb-16">
+        <div className="mb-16" id="reviews">
           <h2 className="text-3xl font-outfit font-bold text-forest-700 mb-8">Customer Reviews</h2>
           <ProductReviews productId={product.id!} reviews={mockReviews} />
         </div>

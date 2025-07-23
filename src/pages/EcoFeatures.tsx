@@ -14,11 +14,6 @@ import { Sparkles, Target, Calculator, MapPin, Package, Coins, Users, Activity, 
 const EcoFeatures = () => {
   const features = [
     {
-      icon: <Brain className="h-8 w-8" />,
-      title: "AI-Powered Recommendations",
-      description: "Get personalized sustainability suggestions based on your lifestyle and preferences."
-    },
-    {
       icon: <Activity className="h-8 w-8" />,
       title: "Real-time Impact Tracking",
       description: "Monitor your environmental impact with live metrics and progress tracking."
