@@ -130,29 +130,6 @@ The transition to zero-waste doesn't happen overnight. Start with one area, mast
               {post.title}
             </h1>
             
-            <div className="flex items-center justify-between flex-wrap gap-4 mb-8">
-              <div className="flex items-center gap-6 text-sage-600">
-                <div className="flex items-center">
-                  <User className="h-4 w-4 mr-2" />
-                  {post.author}
-                </div>
-                <div className="flex items-center">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  {post.date}
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm">
-                  <Heart className="h-4 w-4 mr-2" />
-                  Like
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Share2 className="h-4 w-4 mr-2" />
-                  Share
-                </Button>
-              </div>
-            </div>
           </header>
 
           {/* Featured Image */}
@@ -173,38 +150,6 @@ The transition to zero-waste doesn't happen overnight. Start with one area, mast
             </div>
           </div>
 
-          {/* Tags */}
-          <div className="mb-12">
-            <h3 className="text-lg font-semibold text-forest-700 mb-4">Tags</h3>
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <span 
-                  key={tag}
-                  className="px-3 py-1 bg-sage-100 text-sage-700 text-sm rounded-full hover:bg-sage-200 cursor-pointer"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Author Bio */}
-          <div className="bg-sage-50 rounded-eco p-6 mb-12">
-            <div className="flex items-start gap-4">
-              <div className="w-16 h-16 bg-sage-200 rounded-full flex items-center justify-center">
-                <User className="h-8 w-8 text-sage-600" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-forest-700">{post.author}</h3>
-                <p className="text-sage-600 mb-2">
-                  Environmental writer and sustainability advocate with over 10 years of experience in eco-friendly living.
-                </p>
-                <Button variant="outline" size="sm">
-                  View Profile
-                </Button>
-              </div>
-            </div>
-          </div>
 
           {/* Related Posts */}
           <div>

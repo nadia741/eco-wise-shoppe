@@ -206,14 +206,14 @@ const HeroSlider = () => {
       {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 lg:left-8 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full shadow-eco transition-all duration-300 z-20 hover-scale"
+        className="absolute left-4 lg:left-8 top-1/2 transform -translate-y-1/2 bg-sage-600/80 hover:bg-sage-700/90 backdrop-blur-sm text-white p-3 rounded-full shadow-lg transition-all duration-300 z-20 hover:scale-110 active:scale-95"
         aria-label="Previous slide"
       >
         <ChevronLeft className="h-6 w-6" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 lg:right-8 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full shadow-eco transition-all duration-300 z-20 hover-scale"
+        className="absolute right-4 lg:right-8 top-1/2 transform -translate-y-1/2 bg-sage-600/80 hover:bg-sage-700/90 backdrop-blur-sm text-white p-3 rounded-full shadow-lg transition-all duration-300 z-20 hover:scale-110 active:scale-95"
         aria-label="Next slide"
       >
         <ChevronRight className="h-6 w-6" />
@@ -225,10 +225,10 @@ const HeroSlider = () => {
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+            className={`w-4 h-4 rounded-full transition-all duration-300 border-2 ${
               index === currentSlide 
-                ? 'bg-white scale-125 shadow-lg' 
-                : 'bg-white/50 hover:bg-white/70 hover:scale-110'
+                ? 'bg-sage-500 border-sage-300 scale-125 shadow-lg' 
+                : 'bg-white/30 border-white/50 hover:bg-white/50 hover:border-white/70 hover:scale-110'
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
@@ -236,9 +236,9 @@ const HeroSlider = () => {
       </div>
 
       {/* Progress Bar */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
+      <div className="absolute bottom-0 left-0 right-0 h-2 bg-black/20">
         <div 
-          className="h-full bg-sage-400 transition-all duration-1000 ease-linear"
+          className="h-full bg-gradient-to-r from-sage-500 to-tree-500 transition-all duration-1000 ease-linear shadow-sm"
           style={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
         />
       </div>

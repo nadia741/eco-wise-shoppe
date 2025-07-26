@@ -60,12 +60,23 @@ const Checkout = () => {
       // Notify about order confirmation
       earnPoints(total);
       
+      // Send order confirmation email (simulate)
+      const orderNumber = `GW${Date.now().toString().slice(-8)}`;
+      console.log('Order confirmation email sent:', {
+        orderNumber,
+        customerName: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
+        email: shippingInfo.email,
+        items: cartItems,
+        total,
+        shippingAddress: `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state} ${shippingInfo.zip}`
+      });
+      
       // Clear cart and show success
       clearCart();
       
       toast({
         title: "🎉 Order Placed Successfully!",
-        description: `Your order of $${total.toFixed(2)} has been confirmed. Cash on delivery selected.`,
+        description: `Order #${orderNumber} confirmed. Confirmation email sent to ${shippingInfo.email}`,
         duration: 5000,
       });
 

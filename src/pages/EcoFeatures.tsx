@@ -8,7 +8,7 @@ import CommunityEcoChallenges from '@/components/CommunityEcoChallenges';
 import CarbonOffsetMarketplace from '@/components/CarbonOffsetMarketplace';
 import SustainabilityCalculator from '@/components/SustainabilityCalculator';
 import LocalEcoDirectory from '@/components/LocalEcoDirectory';
-import SubscriptionEcoBoxes from '@/components/SubscriptionEcoBoxes';
+
 import { Sparkles, Target, Calculator, MapPin, Package, Coins, Users, Activity, Brain, Leaf } from 'lucide-react';
 
 const EcoFeatures = () => {
@@ -38,11 +38,6 @@ const EcoFeatures = () => {
       title: "Local Eco-Business Directory",
       description: "Discover and support sustainable businesses in your local area."
     },
-    {
-      icon: <Package className="h-8 w-8" />,
-      title: "Subscription Eco-Boxes",
-      description: "Receive curated sustainable products delivered monthly to your door."
-    }
   ];
 
   return (
@@ -142,7 +137,6 @@ const EcoFeatures = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <LocalEcoDirectory />
-            <SubscriptionEcoBoxes />
           </div>
         </div>
       </section>

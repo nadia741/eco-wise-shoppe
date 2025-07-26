@@ -139,16 +139,6 @@ The transition to zero-waste doesn't happen overnight. Start with one area, mast
                   {post.excerpt}
                 </p>
                 
-                <div className="flex items-center justify-between text-sm text-sage-500 mb-4 pb-4 border-b border-sage-100">
-                  <div className="flex items-center">
-                    <User className="h-4 w-4 mr-2" />
-                    {post.author}
-                  </div>
-                  <div className="flex items-center">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    {post.date}
-                  </div>
-                </div>
                 
                 <Link 
                   to={`/blog/${post.id}`}
@@ -179,9 +169,6 @@ The transition to zero-waste doesn't happen overnight. Start with one area, mast
             Complete blog with sustainability guides, educational content, videos, and infographics about sustainable living coming soon!
           </p>
           
-          <Button className="bg-tree-600 hover:bg-tree-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg">
-            Subscribe to Updates
-          </Button>
         </div>
       </div>
 
