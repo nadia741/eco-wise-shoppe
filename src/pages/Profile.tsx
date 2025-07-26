@@ -7,40 +7,23 @@ import { Badge } from '@/components/ui/badge';
 import { 
   User, 
   Package, 
-  TrendingUp, 
-  BarChart3, 
-  Award, 
   ShoppingBag,
-  Leaf,
-  Droplets,
-  TreePine,
-  Star,
-  Gift,
   Heart
 } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
-import { useRewards } from '@/contexts/RewardsContext';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('Order History');
   const { cartItems, getCartTotal } = useCart();
-  const { points, tier, availableOffers, claimOffer } = useRewards();
 
   // Calculate shopping-based stats (same as homepage)
   const totalOrders = cartItems.length > 0 ? Math.max(1, Math.floor(cartItems.length / 3)) : 0;
   const totalSpent = getCartTotal();
-  const co2Saved = (totalSpent * 0.035).toFixed(1); // 35g CO2 per dollar spent
-  const treesPlanted = Math.floor(totalSpent / 15); // 1 tree per $15 spent
-  
-  // Calculate sustainability score - starts from 0 and increases based on shopping
-  const baseSustainabilityScore = Math.min(100, Math.floor(totalSpent * 2) + (treesPlanted * 5) + (totalOrders * 3));
 
   const profileData = {
     name: "Eco Enthusiast",
     email: "hellonadia321@gmail.com",
     memberSince: "2023",
-    sustainabilityScore: points,
-    goldMember: true,
   };
 
   const statsData = [
@@ -48,21 +31,6 @@ const Profile = () => {
       icon: <Package className="h-8 w-8 text-tree-600" />,
       value: totalOrders.toString(),
       label: "Total Orders"
-    },
-    {
-      icon: <TrendingUp className="h-8 w-8 text-tree-600" />,
-      value: `$${totalSpent.toFixed(2)}`,
-      label: "Total Spent"
-    },
-    {
-      icon: <Droplets className="h-8 w-8 text-blue-600" />,
-      value: `${co2Saved}kg`,
-      label: "CO₂ Saved"
-    },
-    {
-      icon: <TreePine className="h-8 w-8 text-forest-600" />,
-      value: treesPlanted.toString(),
-      label: "Trees Planted"
     }
   ];
 
@@ -74,14 +42,10 @@ const Profile = () => {
       { name: item.name, quantity: item.quantity, price: item.price }
     ],
     total: item.price * item.quantity,
-    status: index === 0 ? "shipped" : "delivered",
-    impact: { 
-      co2: `${(item.price * item.quantity * 0.035).toFixed(1)}kg`, 
-      trees: Math.floor((item.price * item.quantity) / 15) 
-    }
+    status: index === 0 ? "shipped" : "delivered"
   })) : [];
 
-  const tabs = ['Order History', 'Wishlist', 'Rewards & Offers', 'Environmental Impact', 'Statistics'];
+  const tabs = ['Order History', 'Wishlist'];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sage-50/30 to-cream-50">
@@ -91,43 +55,17 @@ const Profile = () => {
         {/* Profile Header */}
         <div className="mb-12 animate-fade-in-up">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
-            <div className="relative">
-              <div className="w-24 h-24 bg-tree-600 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-xl">
-                <User className="h-12 w-12" />
-              </div>
-              <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">{profileData.sustainabilityScore}</span>
-              </div>
+            <div className="w-24 h-24 bg-tree-600 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-xl">
+              <User className="h-12 w-12" />
             </div>
             
             <div className="flex-1">
-              <div className="flex items-center gap-4 mb-2">
-                <h1 className="text-3xl font-outfit font-bold text-forest-700">
-                  {profileData.name}
-                </h1>
-                {profileData.goldMember && (
-                  <Badge className="bg-yellow-100 text-yellow-800 border-yellow-300">
-                    <Star className="h-3 w-3 mr-1" />
-                    {tier} Member
-                  </Badge>
-                )}
-              </div>
+              <h1 className="text-3xl font-outfit font-bold text-forest-700 mb-2">
+                {profileData.name}
+              </h1>
               <p className="text-sage-600 mb-2">{profileData.email}</p>
               <div className="flex items-center gap-4 text-sm text-sage-500">
                 <span>Member since {profileData.memberSince}</span>
-              </div>
-              
-              <div className="mt-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-sm font-medium text-forest-700">Sustainability Score</span>
-                  <span className="text-2xl font-bold text-tree-600">{profileData.sustainabilityScore}</span>
-                </div>
-                <div className="w-full bg-sage-100 rounded-full h-3">
-                  <div 
-                    className="bg-gradient-to-r from-tree-500 to-forest-600 h-3 rounded-full transition-all duration-500"
-                    style={{ width: `${Math.min(100, (profileData.sustainabilityScore / 500) * 100)}%` }}
-                  ></div>
-                </div>
               </div>
             </div>
           </div>
@@ -233,16 +171,6 @@ const Profile = () => {
                       </Button>
                     </div>
                     
-                    <div className="flex items-center gap-6 text-sm bg-tree-50 rounded-lg p-3">
-                      <div className="flex items-center gap-2">
-                        <Droplets className="h-4 w-4 text-blue-600" />
-                        <span>{order.impact.co2} CO₂ saved</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <TreePine className="h-4 w-4 text-forest-600" />
-                        <span>{order.impact.trees} trees planted</span>
-                      </div>
-                    </div>
                   </CardContent>
                 </Card>
               ))
@@ -272,75 +200,6 @@ const Profile = () => {
           </div>
         )}
 
-        {/* Rewards & Offers Tab */}
-        {activeTab === 'Rewards & Offers' && (
-          <div className="space-y-6 animate-fade-in-up">
-            <div className="flex items-center gap-3 mb-6">
-              <Gift className="h-6 w-6 text-forest-700" />
-              <h2 className="text-2xl font-outfit font-bold text-forest-700">Rewards & Special Offers</h2>
-            </div>
-            
-            {/* Current Points */}
-            <Card className="bg-gradient-to-br from-tree-50 to-forest-50 border-tree-200">
-              <CardContent className="p-6 text-center">
-                <div className="text-4xl font-outfit font-bold text-tree-600 mb-2">{points}</div>
-                <div className="text-forest-700 font-medium mb-4">Sustainability Points</div>
-                <div className="text-sm text-sage-600">
-                  {20 - (points % 20)} more points until your next special discount!
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Available Offers */}
-            {availableOffers.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="text-xl font-outfit font-bold text-forest-700">Available Offers</h3>
-                {availableOffers.map((offer, index) => (
-                  <Card key={index} className="bg-white/90 backdrop-blur-sm border-yellow-300 border-2">
-                    <CardContent className="p-6 flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                          <Gift className="h-6 w-6 text-yellow-600" />
-                        </div>
-                        <div>
-                          <div className="font-bold text-forest-700">{offer}</div>
-                          <div className="text-sm text-sage-600">Limited time offer</div>
-                        </div>
-                      </div>
-                      <Button 
-                        onClick={() => claimOffer(offer)}
-                        className="bg-yellow-500 hover:bg-yellow-600 text-white"
-                      >
-                        Claim Offer
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-
-            {availableOffers.length === 0 && (
-              <div className="text-center py-12">
-                <Gift className="h-16 w-16 text-sage-300 mx-auto mb-4" />
-                <h3 className="text-xl font-outfit font-bold text-forest-700 mb-2">No Offers Available</h3>
-                <p className="text-sage-600">Keep shopping to unlock special discounts every 20 points!</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Other tabs content would go here */}
-        {(activeTab === 'Environmental Impact' || activeTab === 'Statistics') && (
-          <div className="text-center py-20 animate-fade-in-up">
-            <div className="text-6xl mb-4">🚧</div>
-            <h3 className="text-2xl font-outfit font-bold text-forest-700 mb-4">
-              {activeTab} Coming Soon
-            </h3>
-            <p className="text-sage-600">
-              We're working on bringing you detailed {activeTab.toLowerCase()} insights.
-            </p>
-          </div>
-        )}
       </div>
 
       <Footer />

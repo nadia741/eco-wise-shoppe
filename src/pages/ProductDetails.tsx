@@ -19,7 +19,7 @@ const ProductDetails = () => {
   const { toast } = useToast();
   const { addToCart } = useCart();
   const { user } = useAuth();
-  const { earnPoints, getPointsFromPurchase } = useRewards();
+  const { earnPoints } = useRewards();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
@@ -118,9 +118,8 @@ const ProductDetails = () => {
       quantity: quantity
     });
 
-    // Earn points for cart addition (1 point per dollar)
-    const pointsEarned = getPointsFromPurchase(product.price * quantity);
-    earnPoints(pointsEarned);
+    // Notify about successful cart addition
+    earnPoints(product.price * quantity);
 
     await new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -128,7 +127,7 @@ const ProductDetails = () => {
     
     toast({
       title: "Added to Cart! 🛒✨",
-      description: `${quantity} x ${product.name} added successfully. You earned ${pointsEarned} reward points!`,
+      description: `${quantity} x ${product.name} added successfully.`,
       duration: 4000,
     });
 

@@ -32,12 +32,6 @@ const Index = () => {
 
       <ImpactSection />
       <TestimonialsSection />
-      <SustainabilityMetrics 
-        orders={totalOrders}
-        spent={totalSpent}
-        co2Saved={co2Saved}
-        treesPlanted={treesPlanted}
-      />
       <Footer />
     </div>
   );

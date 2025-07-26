@@ -22,7 +22,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useAuth();
   const { getCartItemsCount, getWishlistItemsCount } = useCart();
-  const { points: sustainabilityScore } = useRewards();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -151,30 +150,6 @@ const Header = () => {
               <Search className="h-5 w-5" />
             </Button>
 
-            {/* Sustainability Score */}
-            <div className="hidden sm:flex items-center space-x-2 text-sage-600">
-              <span className="text-sm">Score:</span>
-              <span className="font-bold text-tree-600">{sustainabilityScore}</span>
-            </div>
-
-            {/* Wishlist - only visible when authenticated */}
-            {isAuthenticated && (
-              <Link to="/profile">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="hidden sm:flex items-center space-x-2 text-sage-600 hover:text-tree-600 relative hover-scale"
-                >
-                  <Heart className="h-5 w-5" />
-                  <span className="hidden lg:inline text-sm font-medium">Wishlist</span>
-                  {getWishlistItemsCount() > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-coral text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse">
-                      {getWishlistItemsCount()}
-                    </span>
-                  )}
-                </Button>
-              </Link>
-            )}
 
             {/* Cart */}
             <Link to="/cart">
