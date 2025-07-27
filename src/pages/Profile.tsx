@@ -14,7 +14,7 @@ import { useCart } from '@/contexts/CartContext';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('Order History');
-  const { cartItems, getCartTotal } = useCart();
+  const { cartItems, getCartTotal, wishlistItems, addToCart, removeFromWishlist } = useCart();
 
   // Calculate shopping-based stats (same as homepage)
   const totalOrders = cartItems.length > 0 ? Math.max(1, Math.floor(cartItems.length / 3)) : 0;
@@ -186,17 +186,62 @@ const Profile = () => {
               <h2 className="text-2xl font-outfit font-bold text-forest-700">My Wishlist</h2>
             </div>
             
-            <div className="text-center py-12">
-              <Heart className="h-16 w-16 text-sage-300 mx-auto mb-4" />
-              <h3 className="text-xl font-outfit font-bold text-forest-700 mb-2">Your Wishlist is Empty</h3>
-              <p className="text-sage-600 mb-6">Save products you love to your wishlist for easy access later!</p>
-              <Button 
-                className="bg-tree-600 hover:bg-tree-700 text-white"
-                onClick={() => window.location.href = '/products'}
-              >
-                Browse Products
-              </Button>
-            </div>
+            {/* Wishlist Items */}
+            {wishlistItems.length === 0 ? (
+              <div className="text-center py-12">
+                <Heart className="h-16 w-16 text-sage-300 mx-auto mb-4" />
+                <h3 className="text-xl font-outfit font-bold text-forest-700 mb-2">Your Wishlist is Empty</h3>
+                <p className="text-sage-600 mb-6">Save products you love to your wishlist for easy access later!</p>
+                <Button 
+                  className="bg-tree-600 hover:bg-tree-700 text-white"
+                  onClick={() => window.location.href = '/products'}
+                >
+                  Browse Products
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {wishlistItems.map((item) => (
+                  <Card key={item.id} className="bg-white/90 backdrop-blur-sm border-sage-200 overflow-hidden group hover:shadow-lg transition-all duration-300">
+                    <div className="aspect-square relative overflow-hidden">
+                      <img 
+                        src={item.image} 
+                        alt={item.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-outfit font-semibold text-forest-700 mb-2 line-clamp-2">
+                        {item.name}
+                      </h3>
+                      <p className="text-tree-600 font-bold text-lg mb-4">
+                        ${item.price}
+                      </p>
+                      <div className="flex gap-2">
+                        <Button 
+                          size="sm"
+                          className="flex-1 bg-tree-600 hover:bg-tree-700 text-white"
+                          onClick={() => {
+                            addToCart(item);
+                            removeFromWishlist(item.id);
+                          }}
+                        >
+                          Add to Cart
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="border-sage-300 text-sage-600 hover:bg-sage-50"
+                          onClick={() => removeFromWishlist(item.id)}
+                        >
+                          <Heart className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         )}
 

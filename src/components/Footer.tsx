@@ -41,7 +41,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-outfit font-semibold text-white mb-6">Quick Links</h3>
             <ul className="space-y-3">
-              {['Products', 'Categories', 'Sustainability', 'Blog', 'About Us', 'How It Works'].map((link) => (
+              {['Products', 'Categories', 'Blog', 'About Us'].map((link) => (
                 <li key={link}>
                   <a href="#" className="text-cream-200 hover:text-sage-300 transition-colors">
                     {link}
@@ -55,7 +55,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-outfit font-semibold text-white mb-6">Support</h3>
             <ul className="space-y-3">
-              {['Help Center', 'Shipping Info', 'Returns', 'Size Guide', 'Contact Us', 'FAQ'].map((link) => (
+              {['Help Center', 'Shipping Info', 'Size Guide', 'Contact Us', 'FAQ'].map((link) => (
                 <li key={link}>
                   <a href="#" className="text-cream-200 hover:text-sage-300 transition-colors">
                     {link}

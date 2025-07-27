@@ -40,6 +40,10 @@ const EcoFeatures = () => {
     },
   ];
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-cream-50">
       <Header />
@@ -93,7 +97,11 @@ const EcoFeatures = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {features.map((feature, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-sage-100">
+              <div 
+                key={index} 
+                className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-sage-100 cursor-pointer"
+                onClick={scrollToTop}
+              >
                 <div className="p-3 bg-tree-50 rounded-lg w-fit mb-4 text-tree-600">
                   {feature.icon}
                 </div>
