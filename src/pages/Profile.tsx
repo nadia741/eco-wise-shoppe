@@ -14,36 +14,13 @@ import { useCart } from '@/contexts/CartContext';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('Order History');
-  const { cartItems, getCartTotal, wishlistItems, addToCart, removeFromWishlist } = useCart();
-
-  // Calculate shopping-based stats (same as homepage)
-  const totalOrders = cartItems.length > 0 ? Math.max(1, Math.floor(cartItems.length / 3)) : 0;
-  const totalSpent = getCartTotal();
+  const { orderHistory, getOrderCount, wishlistItems, addToCart, removeFromWishlist } = useCart();
 
   const profileData = {
     name: "Eco Enthusiast",
     email: "hellonadia321@gmail.com",
     memberSince: "2023",
   };
-
-  const statsData = [
-    {
-      icon: <Package className="h-8 w-8 text-tree-600" />,
-      value: totalOrders.toString(),
-      label: "Total Orders"
-    }
-  ];
-
-  // Generate order history based on cart items
-  const orderHistory = cartItems.length > 0 ? cartItems.map((item, index) => ({
-    id: `#GW00${1234 + index}`,
-    date: new Date(Date.now() - index * 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),
-    items: [
-      { name: item.name, quantity: item.quantity, price: item.price }
-    ],
-    total: item.price * item.quantity,
-    status: index === 0 ? "shipped" : "delivered"
-  })) : [];
 
   const tabs = ['Order History', 'Wishlist'];
 
@@ -71,24 +48,6 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {statsData.map((stat, index) => (
-            <Card key={index} className="bg-white/90 backdrop-blur-sm border-sage-200 hover:shadow-lg transition-all duration-300 animate-fade-in-scale">
-              <CardContent className="p-6 text-center">
-                <div className="flex justify-center mb-4">
-                  {stat.icon}
-                </div>
-                <div className="text-3xl font-outfit font-bold text-forest-700 mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-sage-600 font-medium">
-                  {stat.label}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
 
         {/* Tabs Navigation */}
         <div className="flex flex-wrap gap-2 mb-8 bg-white/60 backdrop-blur-sm rounded-2xl p-2">
@@ -154,21 +113,21 @@ const Profile = () => {
                   <CardContent>
                     <div className="space-y-3 mb-4">
                       {order.items.map((item, itemIndex) => (
-                        <div key={itemIndex} className="flex justify-between items-center">
-                          <div>
+                        <div key={itemIndex} className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-lg overflow-hidden">
+                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                          </div>
+                          <div className="flex-1">
                             <span className="font-medium text-forest-700">{item.name}</span>
                             <span className="text-sage-500 ml-2">(x{item.quantity})</span>
                           </div>
-                          <span className="font-semibold text-forest-700">${item.price}</span>
+                          <span className="font-semibold text-forest-700">${(item.price * item.quantity).toFixed(2)}</span>
                         </div>
                       ))}
                     </div>
                     
                     <div className="flex justify-between items-center pt-4 border-t border-sage-200 mb-4">
                       <span className="font-bold text-forest-700 text-lg">Total: ${order.total.toFixed(2)}</span>
-                      <Button variant="outline" size="sm" className="border-tree-300 text-tree-600 hover:bg-tree-50">
-                        View Details
-                      </Button>
                     </div>
                     
                   </CardContent>

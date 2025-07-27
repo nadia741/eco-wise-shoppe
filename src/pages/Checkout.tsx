@@ -14,9 +14,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
-  const { cartItems, getCartTotal, clearCart } = useCart();
+  const { cartItems, getCartTotal, completeOrder } = useCart();
   const { user } = useAuth();
-  const { earnPoints } = useRewards();
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -35,9 +34,9 @@ const Checkout = () => {
   });
 
   const subtotal = getCartTotal();
-  const shipping = 0; // Free shipping
-  const tax = subtotal * 0.08;
-  const total = subtotal + shipping + tax;
+  const [isFirstOrder] = useState(true); // Track if this is first order
+  const shipping = isFirstOrder ? 0 : 5.99; // Free shipping for first order only
+  const total = subtotal + shipping;
 
   const handleOrderSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,13 +54,12 @@ const Checkout = () => {
 
     // Simulate order processing
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Notify about order confirmation
-      earnPoints(total);
+      // Complete order and get order number
+      const orderNumber = completeOrder(shippingInfo);
       
       // Send order confirmation email (simulate)
-      const orderNumber = `GW${Date.now().toString().slice(-8)}`;
       console.log('Order confirmation email sent:', {
         orderNumber,
         customerName: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
@@ -70,9 +68,6 @@ const Checkout = () => {
         total,
         shippingAddress: `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state} ${shippingInfo.zip}`
       });
-      
-      // Clear cart and show success
-      clearCart();
       
       toast({
         title: "🎉 Order Placed Successfully!",
@@ -273,11 +268,9 @@ const Checkout = () => {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-sage-600">Shipping</span>
-                    <span className="text-sage-700">Free</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-sage-600">Tax</span>
-                    <span>${tax.toFixed(2)}</span>
+                    <span className={shipping === 0 ? "text-tree-600 font-medium" : "text-sage-700"}>
+                      {shipping === 0 ? "Free (First Order)" : `$${shipping.toFixed(2)}`}
+                    </span>
                   </div>
                   <div className="flex justify-between text-lg font-bold border-t border-sage-100 pt-2">
                     <span className="text-forest-700">Total</span>

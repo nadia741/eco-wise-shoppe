@@ -16,7 +16,6 @@ interface ProductCardProps {
   rating: number;
   reviews: number;
   image: string;
-  sustainabilityScore: number;
   certifications: string[];
   carbonFootprint: string;
   isNew?: boolean;
@@ -33,7 +32,6 @@ const ProductCard = ({
   rating,
   reviews,
   image,
-  sustainabilityScore,
   certifications = [], // Default to empty array
   carbonFootprint,
   isNew = false,
@@ -51,17 +49,6 @@ const ProductCard = ({
 
   const isInWishlist = wishlistItems.some(item => item.id === id);
 
-  const getSustainabilityColor = (score: number) => {
-    if (score >= 90) return 'bg-tree-500';
-    if (score >= 70) return 'bg-forest-500';
-    return 'bg-sage-500';
-  };
-
-  const getSustainabilityText = (score: number) => {
-    if (score >= 90) return 'Excellent';
-    if (score >= 70) return 'Good';
-    return 'Fair';
-  };
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
