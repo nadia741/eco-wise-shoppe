@@ -157,10 +157,38 @@ const ProductCatalog = () => {
           <div className={`lg:w-80 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="bg-white rounded-eco shadow-eco p-6 sticky top-24 animate-fade-in-scale">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-forest-700">Filters</h3>
+                <h3 className="text-lg font-semibold text-forest-700">Shop by Category</h3>
                 <Button variant="ghost" size="sm" onClick={clearFilters}>
                   Clear All
                 </Button>
+              </div>
+
+              {/* Categories Grid */}
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                {[
+                  { key: 'Kids & Pets', icon: '🌸', name: 'Kids & Pets' },
+                  { key: 'Beauty & Personal Care', icon: '💎', name: 'Beauty & Care' },
+                  { key: 'Home & Kitchen', icon: '🏮', name: 'Home & Kitchen' },
+                  { key: 'Bathroom Essentials', icon: '🧘', name: 'Bathroom' },
+                  { key: 'Drinkware', icon: '🌊', name: 'Drinkware' },
+                  { key: 'Bags', icon: '🌿', name: 'Bags' }
+                ].map((category) => (
+                  <button
+                    key={category.key}
+                    onClick={() => {
+                      setFilters(prev => ({ ...prev, category: category.key, subcategory: 'all' }));
+                      setCurrentPage(1);
+                    }}
+                    className={`p-4 rounded-lg border transition-all duration-200 text-center ${
+                      filters.category === category.key
+                        ? 'bg-tree-100 border-tree-300 text-tree-700'
+                        : 'bg-white border-sage-200 hover:bg-sage-50 text-sage-600'
+                    }`}
+                  >
+                    <div className="text-2xl mb-2">{category.icon}</div>
+                    <div className="text-sm font-medium">{category.name}</div>
+                  </button>
+                ))}
               </div>
 
               {/* Category & Subcategory Filters */}

@@ -264,12 +264,12 @@ const ProductCard = ({
 
         {/* Price and Add to Cart */}
         <div className="flex items-center justify-between pt-4 border-t border-sage-100">
-          <div className="flex items-center space-x-3">
+          <div className="flex flex-col">
             <span className="text-2xl font-outfit font-bold text-forest-700">
               ${price}
             </span>
             {originalPrice && (
-              <div className="flex flex-col">
+              <div className="flex flex-col mt-1">
                 <span className="text-sm text-gray-400 line-through">
                   ${originalPrice}
                 </span>

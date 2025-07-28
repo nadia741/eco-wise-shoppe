@@ -55,19 +55,22 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-outfit font-semibold text-white mb-6">Support</h3>
             <ul className="space-y-3">
-              {['Help Center', 'Shipping Info', 'Size Guide', 'Contact Us', 'FAQ'].map((link) => (
-                <li key={link}>
-                  <a href="#" className="text-cream-200 hover:text-sage-300 transition-colors">
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="#" className="text-cream-200 hover:text-sage-300 transition-colors">
+                  Contact Us
+                </a>
+              </li>
+              <li>
+                <a href="/faq" className="text-cream-200 hover:text-sage-300 transition-colors">
+                  FAQ
+                </a>
+              </li>
             </ul>
           </div>
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-lg font-outfit font-semibold text-white mb-6">Get in Touch</h3>
+            <h3 className="text-lg font-outfit font-semibold text-white mb-6">Contact Us</h3>
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-sage-300" />
@@ -83,6 +86,14 @@ const Footer = () => {
                   123 Eco Street<br />
                   Green City, GC 12345
                 </span>
+              </div>
+            </div>
+
+            <h3 className="text-lg font-outfit font-semibold text-white mb-6 mt-8">Help Center</h3>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <Phone className="h-5 w-5 text-sage-300" />
+                <span className="text-cream-200">+1 (555) 987-6543</span>
               </div>
             </div>
 

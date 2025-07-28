@@ -38,8 +38,7 @@ const ProductDetails = () => {
     images: [
       "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&h=600&fit=crop",
       "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=600&h=600&fit=crop"
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=600&fit=crop"
     ],
     description: "Made from sustainable bamboo, this water bottle is perfect for eco-conscious individuals. Features double-wall insulation and leak-proof design with a sleek modern aesthetic.",
     features: [
@@ -182,7 +181,7 @@ const ProductDetails = () => {
             </div>
             
             <div className="grid grid-cols-3 gap-3">
-              {product.images.slice(0, 3).map((image, index) => (
+              {product.images.map((image, index) => (
                 <div 
                   key={index} 
                   className={`aspect-square bg-white rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover-lift ${
@@ -211,12 +210,14 @@ const ProductDetails = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col gap-2">
               <span className="text-4xl font-bold text-forest-700">${product.price}</span>
-              <span className="text-xl text-gray-400 line-through">${product.originalPrice}</span>
-              <Badge className="bg-coral-100 text-coral-700 text-lg px-3 py-1">
-                Save ${(product.originalPrice - product.price).toFixed(2)}
-              </Badge>
+              <div className="flex items-center gap-4">
+                <span className="text-xl text-gray-400 line-through">${product.originalPrice}</span>
+                <Badge className="bg-coral-100 text-coral-700 text-lg px-3 py-1">
+                  Save ${(product.originalPrice - product.price).toFixed(2)}
+                </Badge>
+              </div>
             </div>
 
             {/* Sustainability Metrics */}

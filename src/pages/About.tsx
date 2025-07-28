@@ -90,8 +90,8 @@ const About = () => {
                 <span className="block text-tree-200">Commerce</span>
               </h1>
               <p className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed text-tree-100">
-                We're not just another e-commerce platform. We're a movement towards conscious consumption, 
-                connecting ethical brands with environmentally aware consumers to create lasting positive change.
+                We're a movement towards conscious consumption, connecting ethical brands with 
+                environmentally aware consumers to create lasting positive change.
               </p>
             </div>
           </div>

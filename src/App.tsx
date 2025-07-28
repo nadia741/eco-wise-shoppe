@@ -24,6 +24,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import EcoFeatures from "./pages/EcoFeatures";
 import Impact from "./pages/Impact";
+import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,6 +49,7 @@ const AppContent = () => {
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/impact" element={<Impact />} />
+      <Route path="/faq" element={<FAQ />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

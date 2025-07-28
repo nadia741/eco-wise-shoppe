@@ -52,7 +52,6 @@ const Header = () => {
   };
 
   const navigationLinks = [
-    { href: '/', label: 'Home' },
     { href: '/products', label: 'Products' },
     { href: '/about', label: 'About' },
     { href: '/blog', label: 'Blog' },
@@ -101,12 +100,12 @@ const Header = () => {
                 placeholder="Search sustainable products..."
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="pl-12 pr-4 py-3 w-full border-sage-200 focus:border-tree-400 rounded-xl bg-white/80 backdrop-blur-sm"
+                className="pl-12 pr-4 py-3 w-full border-2 border-tree-300 focus:border-tree-500 rounded-xl bg-white shadow-lg focus:shadow-xl transition-all duration-200"
               />
               <Button
                 type="submit"
                 size="sm"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-tree-600 hover:bg-tree-700 text-white px-4 py-2 rounded-lg"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-tree-600 hover:bg-tree-700 text-white px-4 py-2 rounded-lg shadow-md"
               >
                 Search
               </Button>
